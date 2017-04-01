@@ -1,0 +1,12 @@
+{
+  "interface": "enp0s3",
+  "account": "<your-account>",
+  "password": "<your-password>",
+
+  "auth_server": "<auth-server-IP>:1812",
+  "ethernet_mtu": 1500,
+  "vadsl_mtu": 1476,
+
+  "nfqueue_id": 44001,
+  "#": "config file for VADSLL"
+}
