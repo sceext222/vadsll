@@ -4,3 +4,7 @@ dist/
 
 # node.js (npm)
 node_modules/
+
+# rust
+target/
+Cargo.lock
