@@ -15,8 +15,12 @@ pub enum ErrType {
     CreateQueue,
     SetMode,
     SetMaxlen,
+    GetPacketHeader,
+    GetPacketData,
+    PacketDataTooLong,
 }
 
+// FIXME use errno
 pub struct Error {
     _type: ErrType,
     _ret: Option<ffi::c_int>,

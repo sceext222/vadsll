@@ -20,15 +20,19 @@ pub use self::queue::{
     Queue,
     QueueMode,
 };
-pub use self::packet::Packet;
+pub use self::packet::{
+    Packet,
+    VerdictType,
+};
 
 
 pub trait Callback {
-    fn callback(&mut self, queue: Queue, packet: Packet);
+    fn callback(&mut self, packet: Result<Packet, Error>);
 }
 
-// init the libnetfilter_queue library
+// high level simple init function (init the libnetfilter_queue library)
 fn lib_init() -> Result<Handle, Error> {
-    Handle::new()
+    let h = Handle::new();
     // TODO
+    h
 }

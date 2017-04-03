@@ -1,3 +1,5 @@
+// ffi: link to libnetfilter_queue
+// <https://www.netfilter.org/projects/libnetfilter_queue/doxygen/>
 #![allow(non_camel_case_types)]
 
 extern crate libc;
@@ -5,7 +7,6 @@ extern crate errno;
 
 use self::libc::{
     c_uint,
-    c_uchar,
     uint8_t,
     uint16_t,
     uint32_t,
@@ -14,6 +15,7 @@ pub use self::libc::{
     c_int,
     c_void,
     c_char,
+    c_uchar,
 
     AF_INET,
     AF_INET6,
@@ -91,4 +93,14 @@ extern {
         data_len: uint32_t,
         buf: *const c_uchar
     ) -> c_int;
+
+    pub fn nfq_get_msg_packet_hdr(nfad: *mut nfq_data) -> *const nfqnl_msg_packet_hdr;
+    pub fn nfq_get_payload(nfad: *mut nfq_data, data: *mut *mut c_uchar) -> c_int;
+}
+
+#[repr(C, packed)]
+pub struct nfqnl_msg_packet_hdr {
+    pub packet_id: uint32_t,
+    pub hw_protocol: uint16_t,
+    pub hook: uint8_t,
 }

@@ -33,16 +33,16 @@ pub struct Queue {
 }
 
 // callback function from libnetfilter_queue
+#[allow(unused_variables)]
 extern fn _f_callback(qh: *mut ffi::nfq_q_handle, nfmsg: *mut ffi::nfgenmsg, nfad: *mut ffi::nfq_data, data: *mut ffi::c_void) -> ffi::c_int {
     let p_queue: *mut Queue = unsafe { mem::transmute(data) };
     let q: &mut Queue = unsafe { (&p_queue).as_mut().unwrap() };
     // do callback
-    q._callback(nfmsg, nfad) as ffi::c_int
+    q._callback(nfad) as ffi::c_int
 }
 
 impl Queue {
     pub fn new(h: *mut ffi::nfq_handle, num: u16, cb: Box<Callback>) -> Result<Box<Queue>, Error> {
-        // FIXME
         let p_zero: *const ffi::nfq_q_handle = null();
         let mut o: Box<Queue> = Box::new(Queue {
             _h: h,
@@ -62,15 +62,18 @@ impl Queue {
         Ok(o)
     }
 
-    pub fn _callback(&mut self, nfmsg: *mut ffi::nfgenmsg, nfad: *mut ffi::nfq_data) -> isize {
-        // TODO
+    pub fn _callback(&mut self, nfad: *mut ffi::nfq_data) -> isize {
+        let p = Packet::new(self._h, self._qh, nfad);
+        self._cb.callback(p);
+        // FIXME error process
         0
     }
 
     pub fn set_mode(&mut self, mode: QueueMode) -> Result<(), Error> {
-        // FIXME 0xffff ?
         let mode = mode as u8;
-        let r = unsafe { ffi::nfq_set_mode(self._qh, mode, 0xffff) };
+        // FIXME 0xffff ?
+        //let r = unsafe { ffi::nfq_set_mode(self._qh, mode, 0xffff) };
+        let r = unsafe { ffi::nfq_set_mode(self._qh, mode, self._buffer.len() as u32) };
         if r < 0 {
             Err(err_(ErrType::SetMode, &format!("nfq_set_mode(): set copy_packet mode to {:?}", mode), Some(r)))
         } else {
