@@ -58,8 +58,9 @@ impl Packet {
                 }
             }
         };
+        let packet_id = unsafe { ffi::ntohl(header.packet_id) };
         // FIXME
-        println!("DEBUG: Packet::new(): packet_id = {}", header.packet_id);
+        println!("DEBUG: Packet::new(): packet_id = {}", packet_id);
 
         // get packet data
         match unsafe { _get_payload(&mut buffer, nfad) } {
@@ -67,7 +68,7 @@ impl Packet {
             Ok(len) => Ok(Packet {
                 _h: h,
                 _qh: qh,
-                _id: header.packet_id,
+                _id: packet_id,
                 _buffer: buffer,
                 _len: len,
             })
