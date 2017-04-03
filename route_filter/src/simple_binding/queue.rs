@@ -12,7 +12,7 @@ use super::{
 };
 
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum QueueMode {
     CopyNone = ffi::nfqnl_config_mode::NFQNL_COPY_NONE as isize,
     CopyMeta = ffi::nfqnl_config_mode::NFQNL_COPY_META as isize,
@@ -70,10 +70,8 @@ impl Queue {
     }
 
     pub fn set_mode(&mut self, mode: QueueMode) -> Result<(), Error> {
-        let mode = mode as u8;
-        // FIXME 0xffff ?
-        //let r = unsafe { ffi::nfq_set_mode(self._qh, mode, 0xffff) };
-        let r = unsafe { ffi::nfq_set_mode(self._qh, mode, self._buffer.len() as u32) };
+        let len = self._buffer.len() as u32;
+        let r = unsafe { ffi::nfq_set_mode(self._qh, mode as u8, len) };
         if r < 0 {
             Err(err_(ErrType::SetMode, &format!("nfq_set_mode(): set copy_packet mode to {:?}", mode), Some(r)))
         } else {

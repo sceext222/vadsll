@@ -104,3 +104,8 @@ pub struct nfqnl_msg_packet_hdr {
     pub hw_protocol: uint16_t,
     pub hook: uint8_t,
 }
+
+
+extern {
+    pub fn ntohl(netlong: u32) -> u32;
+}
