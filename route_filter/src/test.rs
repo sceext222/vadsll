@@ -6,6 +6,8 @@ use simple_binding::{
     VerdictType,
 };
 
+use ip_header::IpHeader;
+
 
 struct TestCb {
     _count: usize,
@@ -39,6 +41,7 @@ impl simple_binding::Callback for TestCb {
     }
 }
 
+
 #[test]
 fn simple_binding() {
     println!("DEBUG: start init library");
@@ -60,4 +63,19 @@ fn simple_binding() {
         println!("DEBUG: q.recv_one() -> {}", r);
     }
     println!("DEBUG: test done");
+}
+
+#[test]
+fn ip_header_checksum() {
+    let raw = vec![
+        0x91, 0x94, 0x80, 0x73, 0x00, 0x00, 0x40, 0x00,
+        0x40, 0x11, 0x00, 0x00,
+        0xc0, 0xa8, 0x00, 0x01, 0xc0, 0xa8, 0x00, 0xc7,
+    ];
+    let mut h = IpHeader::new_from(&raw);
+    h.update_checksum();
+    let d = h.get_data();
+
+    assert_eq!(d[10], 0xeb);
+    assert_eq!(d[11], 0xcc);
 }
