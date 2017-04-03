@@ -71,7 +71,9 @@ impl Queue {
 
     pub fn set_mode(&mut self, mode: QueueMode) -> Result<(), Error> {
         let mode = mode as u8;
-        let len = self._buffer.len() as u32;
+        // FIXME
+        //let len = self._buffer.len() as u32;
+        let len = 0xffff;
         // FIXME DEBUG
         println!("DEBUG: Queue.set_mode(): mode = {}, len = {}", mode, len);
 
@@ -113,6 +115,9 @@ impl Queue {
     // if return <= 0, should exit loop
     pub fn recv_one(&mut self) -> usize {
         let rv = unsafe { ffi::recv(self._fd, self._buffer.as_mut_ptr() as *mut ffi::c_void, self._buffer.len(), 0) };
+        // FIXME
+        println!("DEBUG: Queue.recv_one(): len = {}", rv);
+
         if rv > 0 {
             unsafe { ffi::nfq_handle_packet(self._h, self._buffer.as_mut_ptr() as *mut ffi::c_char, rv as i32) };
         }
