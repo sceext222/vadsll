@@ -12,7 +12,7 @@ use super::{
 };
 
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum QueueMode {
     CopyNone = ffi::nfqnl_config_mode::NFQNL_COPY_NONE as isize,
     CopyMeta = ffi::nfqnl_config_mode::NFQNL_COPY_META as isize,
@@ -70,16 +70,10 @@ impl Queue {
     }
 
     pub fn set_mode(&mut self, mode: QueueMode) -> Result<(), Error> {
-        let mode = mode as u8;
-        // FIXME
-        //let len = self._buffer.len() as u32;
-        let len = 0xffff;
-        // FIXME DEBUG
-        println!("DEBUG: Queue.set_mode(): mode = {}, len = {}", mode, len);
-
+        let len = self._buffer.len() as u32;
+        //let len = 0xffff;
         // FIXME 0xffff ?
-        //let r = unsafe { ffi::nfq_set_mode(self._qh, mode, 0xffff) };
-        let r = unsafe { ffi::nfq_set_mode(self._qh, mode, len) };
+        let r = unsafe { ffi::nfq_set_mode(self._qh, mode as u8, len) };
         if r < 0 {
             Err(err_(ErrType::SetMode, &format!("nfq_set_mode(): set copy_packet mode to {:?}", mode), Some(r)))
         } else {
@@ -115,9 +109,6 @@ impl Queue {
     // if return <= 0, should exit loop
     pub fn recv_one(&mut self) -> usize {
         let rv = unsafe { ffi::recv(self._fd, self._buffer.as_mut_ptr() as *mut ffi::c_void, self._buffer.len(), 0) };
-        // FIXME
-        println!("DEBUG: Queue.recv_one(): len = {}", rv);
-
         if rv > 0 {
             unsafe { ffi::nfq_handle_packet(self._h, self._buffer.as_mut_ptr() as *mut ffi::c_char, rv as i32) };
         }

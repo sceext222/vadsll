@@ -106,7 +106,6 @@ pub struct nfqnl_msg_packet_hdr {
 }
 
 
-// FIXME
 extern {
     pub fn ntohl(netlong: u32) -> u32;
 }
