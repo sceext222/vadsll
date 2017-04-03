@@ -1,5 +1,8 @@
 
 
+// IP haeder length: 20 Byte (fixed)
+pub const LEN: usize = 20;
+
 pub struct IpHeader {
     // header data
     _d: Vec<u8>,
@@ -38,10 +41,9 @@ impl IpHeader {
     // create header from exist data
     pub fn new_from(data: &Vec<u8>) -> IpHeader {
         // ip header size: 20 Byte
-        let len = 20;
-        let mut d = vec![0; len];
+        let mut d = vec![0; LEN];
         // copy data
-        for i in 0..len {
+        for i in 0..LEN {
             d[i] = data[i];
         }
         IpHeader {
