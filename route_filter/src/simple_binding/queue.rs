@@ -71,8 +71,6 @@ impl Queue {
 
     pub fn set_mode(&mut self, mode: QueueMode) -> Result<(), Error> {
         let len = self._buffer.len() as u32;
-        //let len = 0xffff;
-        // FIXME 0xffff ?
         let r = unsafe { ffi::nfq_set_mode(self._qh, mode as u8, len) };
         if r < 0 {
             Err(err_(ErrType::SetMode, &format!("nfq_set_mode(): set copy_packet mode to {:?}", mode), Some(r)))

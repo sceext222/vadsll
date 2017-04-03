@@ -52,7 +52,7 @@ fn simple_binding() {
     println!("DEBUG: init queue");
     q.init(QueueMode::CopyPacket).unwrap();
     // test recv packet count
-    let test_count = 10;
+    let test_count = 4;
     println!("DEBUG: test recv {} packet", test_count);
 
     for _ in 0..test_count {
