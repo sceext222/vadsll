@@ -117,21 +117,23 @@ impl Packet {
 
 
 unsafe fn _get_payload(buffer: &mut [u8; PACKET_BUFFER_SIZE], nfad: *mut ffi::nfq_data) -> Result<usize, Error> {
-    let data: *const [u8; PACKET_BUFFER_SIZE] = null();
-    let ptr: *mut *mut u8 = &mut (data as *mut u8);
+    // FIXME FIXME FIXME FIXME
+    let mut data: *mut u8 = 0 as usize as *mut u8;
     // FIXME
-    println!("DEBUG: packet._get_payload: ptr: data = {}, ptr = {}", data as usize, ptr as usize);
+    //let ptr: *mut *mut u8 = &mut (data as *mut u8);
+    // FIXME
+    println!("DEBUG: packet._get_payload: ptr: data = {}, ptr = {}", data as usize, (&mut data) as *mut *mut u8 as usize);
 
-    let len = ffi::nfq_get_payload(nfad, ptr as *mut *mut ffi::c_uchar);
+    let len = ffi::nfq_get_payload(nfad, (&mut data) as *mut *mut ffi::c_uchar);
     if len < 0 {
         return Err(err_(ErrType::GetPacketData, "nfq_get_payload()", Some(len)));
     }
     // FIXME
-    println!("DEBUG: packet._get_payload: ptr.2: data = {}, ptr = {}", data as usize, ptr as usize);
+    println!("DEBUG: packet._get_payload: ptr.2: data = {}, ptr = {}", data as usize, (&mut data) as *mut *mut u8 as usize);
 
     let len = len as usize;
     // copy data to buffer
-    match data.as_ref() {
+    match (data as *mut [u8; PACKET_BUFFER_SIZE]).as_ref() {
         None => {
             return Err(err_(ErrType::GetPacketData, &format!("nfq_get_payload(): null data pointer, len = {}", len), None));
         },
