@@ -67,7 +67,7 @@ impl Packet {
                 // copy data to buffer
                 match (&data).as_ref() {
                     None => {
-                        return Err(err_(ErrType::GetPacketData, "nfq_get_payload(): null data pointer", None));
+                        return Err(err_(ErrType::GetPacketData, &format!("nfq_get_payload(): null data pointer, len = {}", r), None));
                     },
                     Some(data) => {
                         for i in 0..(r as usize) {
