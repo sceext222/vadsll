@@ -91,6 +91,11 @@ impl Packet {
         })
     }
 
+    // get packet id
+    pub fn id(&self) -> u32 {
+        self._id
+    }
+
     pub fn get_data(&self) -> Vec<u8> {
         let mut o = vec![0; self._len];
         // FIXME simple copy

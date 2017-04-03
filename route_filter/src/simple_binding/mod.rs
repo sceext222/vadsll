@@ -31,8 +31,12 @@ pub trait Callback {
 }
 
 // high level simple init function (init the libnetfilter_queue library)
-fn lib_init() -> Result<Handle, Error> {
-    let h = Handle::new();
-    // TODO
-    h
+pub fn lib_init() -> Result<Handle, Error> {
+    match Handle::new() {
+        Err(e) => Err(e),
+        Ok(mut h) => match h.init() {
+            Err(e) => Err(e),
+            _ => Ok(h)
+        }
+    }
 }
