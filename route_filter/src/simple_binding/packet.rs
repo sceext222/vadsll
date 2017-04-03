@@ -59,41 +59,43 @@ impl Packet {
             }
         };
         // get packet data
-        let len = unsafe {
-            let data: *const [u8; PACKET_BUFFER_SIZE] = null();
-            let ptr: *mut *mut [u8; PACKET_BUFFER_SIZE] = &mut (data as *mut [u8; PACKET_BUFFER_SIZE]);
-            let r = ffi::nfq_get_payload(nfad, ptr as *mut *mut ffi::c_uchar);
-            if r >= 0 {
-                // copy data to buffer
-                match (&data).as_ref() {
-                    None => {
-                        return Err(err_(ErrType::GetPacketData, &format!("nfq_get_payload(): null data pointer, len = {}", r), None));
-                    },
-                    Some(data) => {
-                        for i in 0..(r as usize) {
-                            buffer[i] = data[i];
-                        }
-                    }
-                }
-            }
-            r
-        };
-        if len < 0 {
-            return Err(err_(ErrType::GetPacketData, "nfq_get_payload()", Some(len)));
+        match unsafe { Packet::_get_payload(&mut buffer, nfad) } {
+            Err(e) => Err(e),
+            Ok(len) => Ok(Packet {
+                _h: h,
+                _qh: qh,
+                _id: header.packet_id,
+                _buffer: buffer,
+                _len: len,
+            })
         }
-
-        Ok(Packet {
-            _h: h,
-            _qh: qh,
-            _id: header.packet_id,
-            _buffer: buffer,
-            _len: len as usize,
-        })
     }
 
     // get packet id
     pub fn id(&self) -> u32 {
         self._id
+    }
+
+    unsafe fn _get_payload(buffer: &mut [u8; PACKET_BUFFER_SIZE], nfad: *mut ffi::nfq_data) -> Result<usize, Error> {
+        let data: *const [u8; PACKET_BUFFER_SIZE] = null();
+        let ptr: *mut *mut u8 = &mut (data as *mut u8);
+        let len = ffi::nfq_get_payload(nfad, ptr as *mut *mut ffi::c_uchar);
+        if len < 0 {
+            return Err(err_(ErrType::GetPacketData, "nfq_get_payload()", Some(len)));
+        }
+        let len = len as usize;
+        // copy data to buffer
+        match data.as_ref() {
+            None => {
+                return Err(err_(ErrType::GetPacketData, &format!("nfq_get_payload(): null data pointer, len = {}", len), None));
+            },
+            Some(data) => {
+                for i in 0..len {
+                    buffer[i] = data[i];
+                }
+                Ok(len)
+            }
+        }
     }
 
     pub fn get_data(&self) -> Vec<u8> {
