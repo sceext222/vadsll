@@ -8,5 +8,7 @@
   "vadsl_mtu": 1476,
 
   "nfqueue_id": 44001,
+  "nft_table": "vadsll",
+  "nft_hook_priority": 110,
   "#": "config file for VADSLL"
 }

@@ -1,6 +1,7 @@
 
 dist/
 /etc/config.json
+tmp/
 
 # node.js (npm)
 node_modules/
