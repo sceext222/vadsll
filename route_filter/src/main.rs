@@ -6,15 +6,22 @@ mod ip_header;
 mod header;
 mod process_packet;
 
+use process_packet::{
+    p_args,
+    process_loop,
+    PargsResult,
+};
 
+// TODO FIXME exit function
 fn main() {
-    match process_packet::p_args() {
-        Some(a) => {
-            process_packet::process_loop(&a);
+    match p_args() {
+        PargsResult::Ok(a) => {
+            process_loop(&a);
         },
-        _ => {
+        PargsResult::Err => {
             exit(1);
-        }
+        },
+        _ => ()
     }
 }
 

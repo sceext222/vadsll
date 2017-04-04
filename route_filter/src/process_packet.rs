@@ -50,14 +50,19 @@ impl ArgsInfo {
     }
 }
 
+pub enum PargsResult {
+    Ok(ArgsInfo),
+    Err,
+    None,
+}
 
 // parse process command line arguments and get some info
-pub fn p_args() -> Option<ArgsInfo> {
+pub fn p_args() -> PargsResult {
     let args: Vec<String> = env::args().collect();
     // check empty argument
     if args.len() < 2 {
         _bad_args();
-        return None;
+        return PargsResult::Err;
     }
     let mut o = ArgsInfo::new();
     // ignore first argument
@@ -66,10 +71,10 @@ pub fn p_args() -> Option<ArgsInfo> {
         let a = &args[i];  i += 1;
         if a == "--help" {
             _print_help();
-            return None;
+            return PargsResult::None;
         } else if a == "--version" {
             _print_version();
-            return None;
+            return PargsResult::None;
         } else if a == "--queue" {
             match u16::from_str_radix(&args[i], 10) {
                 Ok(id) => {
@@ -78,7 +83,7 @@ pub fn p_args() -> Option<ArgsInfo> {
                 _ => {
                     // FIXME improve error info
                     _bad_args();
-                    return None;
+                    return PargsResult::Err;
                 }
             }
             i += 1;
@@ -89,7 +94,7 @@ pub fn p_args() -> Option<ArgsInfo> {
                 },
                 _ => {
                     _bad_args();
-                    return None;
+                    return PargsResult::Err;
                 }
             }
             i += 1;
@@ -100,7 +105,7 @@ pub fn p_args() -> Option<ArgsInfo> {
                 },
                 _ => {
                     _bad_args();
-                    return None;
+                    return PargsResult::Err;
                 }
             }
             i += 1;
@@ -111,22 +116,22 @@ pub fn p_args() -> Option<ArgsInfo> {
                 },
                 _ => {
                     _bad_args();
-                    return None;
+                    return PargsResult::Err;
                 }
             }
             i += 1;
         } else {
             // FIXME print to stderr
             println!("ERROR: unknow comamnd line argument `{}`. Please try `--help` ", a);
-            return None;
+            return PargsResult::Err;
         }
     }
     // check bad command line
     if (o.src_ip == 0) || (o.dst_ip == 0) {
         _bad_args();
-        return None;
+        return PargsResult::Err;
     }
-    Some(o)
+    PargsResult::Ok(o)
 }
 
 // parse IPv4 addr, eg: 10.0.0.1
