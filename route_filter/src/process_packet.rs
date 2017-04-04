@@ -1,20 +1,18 @@
-//
-// command line arguments Usage:
-//    --queue QUEUE_NUM
-//    --src-ip SRC_IP
-//    --dst-ip DST_IP
-//
-//    --mtu MTU
-//
-//    --help
-//    --version
-//
 
 use std::env;
 
+use simple_binding;
+use simple_binding::{
+    QueueMode,
+    Packet,
+    VerdictType,
+};
+use header::HeaderP;
 
+
+// # command line process part
 const P_VERSION: &'static str = "vadsll: route_filter version 0.1.0-1 test20170404 2020";
-
+// command line arguments and usage
 fn _print_help() {
     println!("{}",
 "route_filter for vadsll
@@ -172,11 +170,56 @@ fn _print_ip(ip: u32) -> String {
 }
 
 
-// TODO support exit function
+// # packet process part (route filter core)
+
+struct PacketP {
+    _p: HeaderP,
+}
+
+impl PacketP {
+    pub fn new(a: &ArgsInfo) -> PacketP {
+        let mut p = HeaderP::new();
+        // set config
+        p.set_mtu(a.mtu);
+        p.set_src_ip(a.src_ip);
+        p.set_dst_ip(a.dst_ip);
+
+        PacketP {
+            _p: p,
+        }
+    }
+}
+
+impl simple_binding::Callback for PacketP {
+    fn callback(&mut self, packet: Result<Packet, simple_binding::Error>) {
+        let mut p = packet.unwrap();
+        let data = p.get_data();
+        // add header
+        let data = self._p.add_header(&data);
+
+        p.set_data(&data).unwrap();
+        p.verdict(VerdictType::Accept);
+    }
+}
+
+
 pub fn process_loop(a: &ArgsInfo) {
     // DEBUG
     println!("DEBUG: queue = {}, src_ip = {}, dst_ip = {}, MTU = {} ",
         a.queue, _print_ip(a.src_ip), _print_ip(a.dst_ip), a.mtu);
-    // TODO
-    println!("TODO: not finished");
+    // init library
+    let mut h = simple_binding::lib_init().unwrap();
+
+    let cb = Box::new(PacketP::new(a));
+    println!("DEBUG: create queue");
+    let mut q = h.queue(a.queue, cb).unwrap();
+    q.init(QueueMode::CopyPacket).unwrap();
+
+    // TODO support exit function
+    // recv packet loop
+    println!("DEBUG: enter recv packet loop");
+    loop {
+        q.recv_one();
+    }
+    // FIXME
 }
