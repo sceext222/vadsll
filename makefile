@@ -19,10 +19,16 @@ node_modules:
 	npm install
 	mkdir -p $(DIST)/vadsll
 
-build:
-	node ./node_modules/.bin/coffee -o $(DIST)/vadsll src
+build: c rf
+.PHONY: build
+
+rf:
 	cd route_filter; cargo build --release
 	cp route_filter/target/release/vadsll_route_filter $(DIST)/route_filter
+.PHONY: rf
+c:
+	node ./node_modules/.bin/coffee -o $(DIST)/vadsll src/
+.PHONY: c
 
 
 # $ sudo make install
