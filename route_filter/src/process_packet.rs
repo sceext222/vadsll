@@ -120,7 +120,7 @@ pub fn p_args() -> PargsResult {
             i += 1;
         } else {
             // FIXME print to stderr
-            println!("ERROR: unknow comamnd line argument `{}`. Please try `--help` ", a);
+            println!("rf.ERROR: unknow comamnd line argument `{}`. Please try `--help` ", a);
             return PargsResult::Err;
         }
     }
@@ -158,7 +158,7 @@ fn _print_version() {
 
 // FIXME print to stderr
 fn _bad_args() {
-    println!("ERROR: bad command line. Please try `--help` ");
+    println!("rf.ERROR: bad command line. Please try `--help` ");
 }
 
 fn _print_ip(ip: u32) -> String {
@@ -205,19 +205,19 @@ impl simple_binding::Callback for PacketP {
 
 pub fn process_loop(a: &ArgsInfo) {
     // DEBUG
-    println!("DEBUG: queue = {}, src_ip = {}, dst_ip = {}, MTU = {} ",
+    println!("rf.DEBUG: queue = {}, src_ip = {}, dst_ip = {}, MTU = {} ",
         a.queue, _print_ip(a.src_ip), _print_ip(a.dst_ip), a.mtu);
     // init library
     let mut h = simple_binding::lib_init().unwrap();
 
     let cb = Box::new(PacketP::new(a));
-    println!("DEBUG: create queue");
+    println!("rf.DEBUG: create queue");
     let mut q = h.queue(a.queue, cb).unwrap();
     q.init(QueueMode::CopyPacket).unwrap();
 
     // TODO support exit function
     // recv packet loop
-    println!("DEBUG: enter recv packet loop");
+    println!("rf.DEBUG: enter recv packet loop");
     loop {
         q.recv_one();
     }
