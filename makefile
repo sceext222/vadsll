@@ -31,8 +31,8 @@ install:
 	mkdir -p $(INSTALL_ETC)
 	mkdir -p $(INSTALL_LOG)
 
-	cp $(DIST)/* $(INSTALL_DIR)
-	cp etc/* $(INSTALL_ETC)
+	cp -r $(DIST)/* -t $(INSTALL_DIR)
+	cp etc/* -t $(INSTALL_ETC)
 .PHONY: install
 
 # $ sudo make uninstall
