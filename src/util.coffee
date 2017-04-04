@@ -18,9 +18,10 @@ write_file = (file_path, text) ->
 # TCP connector
 class TcpC
   constructor: ->
-    this._recv_buffer = Buffer.alloc(0)
     this._addr = null
     this._socket = null
+    # recv buffer
+    this._buffer = Buffer.alloc(0)
 
   # async
   connect: (ip, port) ->
@@ -99,9 +100,9 @@ get_bind_ip = (ifname) ->
   ip.split('.').map (x) ->
     Number.parseInt x
 
-# get Ethernet MAC address  (/sys/devices/virtual/net/IFNAME/address)
+# get Ethernet MAC address  (/sys/class/net/IFNAME/address)
 get_mac_addr = (ifname) ->
-  p = "/sys/devices/virtual/net/#{ifname}/address"
+  p = "/sys/class/net/#{ifname}/address"
   raw = await async_.read_file(p)
 
   o = raw.split(':').map (x) ->
