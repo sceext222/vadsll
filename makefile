@@ -11,12 +11,13 @@ target: build
 
 
 # TODO FIXME init before build
-init:
+init: node_modules
+.PHONY: init
+node_modules:
 	mkdir -p $(DIST)
 	mkdir -p tmp
 	npm install
 	mkdir -p $(DIST)/vadsll
-.PHONY: init
 
 build:
 	node ./node_modules/.bin/coffee -o $(DIST)/vadsll src
@@ -40,7 +41,7 @@ uninstall:
 .PHONY: uninstall
 
 clean:
-	rm -r $(DIST)
-	rm -r node_modules
-	rm -r route_filter/target
+	- rm -r $(DIST)
+	- rm -r node_modules
+	- rm -r route_filter/target
 .PHONY: clean
