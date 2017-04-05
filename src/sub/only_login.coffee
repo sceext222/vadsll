@@ -41,7 +41,6 @@ _decode_server_msg = (raw) ->
   result = await async_.call_cmd ['iconv', '-f', 'gbk', '-t', 'utf-8', tmp_file]
 
 
-# async
 only_login = ->
   # load config
   c = await config.load()
@@ -89,4 +88,4 @@ only_login = ->
   # logout done
   console.log "vadsll: [ OK ] only-logout success "
 
-module.exports = only_login
+module.exports = only_login  # async
