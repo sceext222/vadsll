@@ -132,7 +132,7 @@ get_mac_addr = (ifname) ->
 
 set_mtu = (ifname, mtu) ->
   console.log "vadsll.D: set MTU of #{ifname} to #{mtu} Byte "
-  # TODO
+  await run_check ['ip', 'link', 'set', ifname, 'mtu', mtu]
 
 
 call_this_args = (args) ->
