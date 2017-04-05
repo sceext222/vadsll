@@ -55,5 +55,7 @@ _start = ->
   catch e
     # DEBUG
     console.log "ERROR: #{e.stack}"
-    throw e
+    # FIXME
+    #throw e
+    process.exit(1)
 _start()
