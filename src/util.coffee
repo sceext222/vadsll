@@ -157,6 +157,16 @@ connect_auth_server = (auth_server) ->
 print_json = (data) ->
   JSON.stringify data, '', '    '
 
+create_pid_file = (file_path) ->
+  try
+    fd = await async_.fs_open file_path, 'wx'
+  catch e
+    console.log "vadsll.E: can not create PID file #{file_path} "
+    throw e
+  # write PID in file
+  await async_.fs_write fd, (process.pid + '')
+  await async_.fs_close fd
+
 
 module.exports = {
   write_file  # async
@@ -172,6 +182,7 @@ module.exports = {
 
   connect_auth_server  # async
   print_json
+  create_pid_file  # async
 
   TcpC
 }

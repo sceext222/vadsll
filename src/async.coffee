@@ -56,6 +56,30 @@ mkdir = (file_path) ->
       else
         resolve()
 
+fs_open = (file_path, flags) ->
+  new Promise (resolve, reject) ->
+    fs.open file_path, flags, (err, fd) ->
+      if err
+        reject err
+      else
+        resolve fd
+
+fs_write = (fd, text) ->
+  new Promise (resolve, reject) ->
+    fs.write fd, text, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
+fs_close = (fd) ->
+  new Promise (resolve, reject) ->
+    fs.close fd, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
 
 # run shell command, pipe stdin -> stdin, stdout -> stdout, stderr -> stderr, return exit_code
 run_cmd = (args) ->
@@ -102,6 +126,9 @@ module.exports = {
   rm  # async
   file_exist  # async
   mkdir  # async
+  fs_open  # async
+  fs_write  # async
+  fs_close  # async
 
   run_cmd  # async
   call_cmd  # async
