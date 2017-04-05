@@ -19,6 +19,21 @@ _PATH_DIST = '../'        #  dist/vadsll/config.js
 _PATH_ETC = '../../etc/'  #  etc/config.json
 _PATH_LOG = '../../tmp/'  #  tmp/
 
+LOG_SERVER_RES_OK    = 'server_res.OK.json'
+LOG_SERVER_RES_ERR   = 'server_res.err.json'
+LOG_NFT_SETUP        = 'setup.nft'
+LOG_NFT_RESET        = 'reset.nft'
+LOG_PID_KEEP_ALIVE   = 'keep_alive.pid'
+LOG_PID_ROUTE_FILTER = 'route_filter.pid'
+
+LOG_FILE_LIST = [
+  LOG_SERVER_RES_OK
+  LOG_SERVER_RES_ERR
+  LOG_NFT_SETUP
+  LOG_NFT_RESET
+]
+LOG_OLD_PATH = 'old'
+
 
 _is_local_installed = ->
   d = path.resolve __dirname
@@ -59,6 +74,16 @@ get_route_filter_bin = ->
 
 
 module.exports = {
+  LOG_SERVER_RES_OK
+  LOG_SERVER_RES_ERR
+  LOG_NFT_SETUP
+  LOG_NFT_RESET
+  LOG_PID_KEEP_ALIVE
+  LOG_PID_ROUTE_FILTER
+
+  LOG_FILE_LIST
+  LOG_OLD_PATH
+
   load  # async
 
   get_config

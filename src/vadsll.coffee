@@ -1,31 +1,59 @@
 # vadsll.coffee, vadsll/src/
-# TODO better command line process
 
-login = require './login'
-logout = require './logout'
 
+_print_help = ->
+  # TODO
+
+_print_version = ->
+  # TODO
 
 main = (argv) ->
-  # TODO
-  # TODO more error process
+  switch argv[0]
+    when '--only-login'
+      await require('./sub/only_login')()
+    when '--only-logout'
+      await require('./sub/only_logout')()
+    when '--nft-gen'
+      await require('./sub/nft_gen')()
+    when '--nft-init'
+      await require('./sub/nft_init')()
+    when '--nft-reset'
+      await require('./sub/nft_reset')()
+    when '--log-backup'
+      await require('./sub/log_backup')()
+    when '--log-clean'
+      await require('./sub/log_clean')()
+    when '--run-keep-alive'
+      await require('./sub/run_keep_alive')()
+    when '--run-route-filter'
+      await require('./sub/run_route_filter')()
+    when '--route-filter'
+      await require('./sub/route_filter')()
+    when '--keep-alive'
+      await require('./sub/keep_alive')()
+    when '--once-keep-alive'
+      await require('./sub/once_keep_alive')()
+    when '--kill-keep-alive'
+      await require('./sub/kill_keep_alive')()
+    when '--kill-route-filter'
+      await require('./sub/kill_route_filter')()
+    when '--login'
+      await require('./sub/login_')()
+    when '--logout'
+      await require('./sub/logout_')()
+    when '--help'
+      _print_help()
+    when '--version'
+      _print_version()
+    else
+      console.log "ERROR: bad command line, please try `--help` "
+      process.exit(1)
 
-  if argv[0] == '--login'
-    try
-      await login()
-    catch e
-      console.log "ERROR: #{e.stack}"
-      throw e
-  else if argv[0] == '--logout'
-    try
-      await logout()
-    catch e
-      console.log "ERROR: #{e.stack}"
-      throw e
-  else
-    console.log "ERROR: bad command line"
-  # TODO
-
-# start from main
-main(process.argv[2..])
-
-# TODO
+_start = ->
+  try
+    await main(process.argv[2..])
+  catch e
+    # DEBUG
+    console.log "ERROR: #{e.stack}"
+    throw e
+_start()

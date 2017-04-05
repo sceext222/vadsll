@@ -30,6 +30,33 @@ mv = (from, to) ->
       else
         resolve()
 
+# remove file
+rm = (file_path) ->
+  new Promise (resolve, reject) ->
+    fs.unlink file_path, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
+# check if file exist
+file_exist = (file_path) ->
+  new Promise (resolve, reject) ->
+    fs.access file_path, fs.constants.R_OK, (err) ->
+      if err
+        resolve false
+      else
+        resolve true
+
+mkdir = (file_path) ->
+  new Promise (resolve, reject) ->
+    fs.mkdir file_path, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
+
 # run shell command, pipe stdin -> stdin, stdout -> stdout, stderr -> stderr, return exit_code
 run_cmd = (args) ->
   new Promise (resolve, reject) ->
@@ -72,6 +99,9 @@ module.exports = {
   read_file  # async
   write_file  # async
   mv  # async
+  rm  # async
+  file_exist  # async
+  mkdir  # async
 
   run_cmd  # async
   call_cmd  # async

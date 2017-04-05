@@ -14,6 +14,18 @@ write_file = (file_path, text) ->
   await async_.write_file tmp_file, text
   await async_.mv tmp_file, file_path
 
+# copy file
+cp = (from, to) ->
+  text = await async_.read_file from
+  await async_.write_file to, text
+
+
+# run command and check exit_code is 0  (else will throw Error)
+run_check = (cmd) ->
+  exit_code = await async_.run_cmd cmd
+  if exit_code != 0
+    throw new Error "run command FAILED  (exit_code = #{exit_code})"
+
 
 # TCP connector
 class TcpC
@@ -117,11 +129,49 @@ get_mac_addr = (ifname) ->
     Number.parseInt x, 16
   [o, raw.trim()]
 
+set_mtu = (ifname, mtu) ->
+  console.log "vadsll.D: set MTU of #{ifname} to #{mtu} Byte "
+  # TODO
+
+
+# run `vadsll` (this program) with different args
+call_this = (args) ->
+  cmd = ['node', process.argv[1]].concat args
+  await run_check cmd
+
+# run a child_process, it should be still running after this process exit
+run_detach = (cmd) ->
+  # TODO
+
+
+# connect to auth_server
+connect_auth_server = (auth_server) ->
+  t = new TcpC()
+  [auth_ip, auth_port] = auth_server.split(':')
+  auth_port = Number.parseInt auth_port
+  # connecting to auth server
+  await t.connect auth_ip, auth_port
+  t
+
+# pretty-print JSON text
+print_json = (data) ->
+  JSON.stringify data, '', '    '
+
 
 module.exports = {
   write_file  # async
+  cp  # async
+  run_check  # async
+
   get_bind_ip  # async
   get_mac_addr  # async
+  set_mtu  # async
+
+  call_this  # async
+  run_detach
+
+  connect_auth_server  # async
+  print_json
 
   TcpC
 }

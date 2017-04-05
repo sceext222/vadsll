@@ -110,10 +110,18 @@ login_ack = ->
 
 # parse server msg
 
+_check_parse_text = (raw) ->
+  o = raw.toString 'utf-8'
+  check = Buffer.from o, 'utf-8'
+  if Buffer.compare(raw, check) == 0
+    ' ' + o
+  else
+    'base64: ' + raw.toString 'base64'
+
 _parse_err = (info) ->
   {
     'type': 'error'
-    'info': info.text.toString()
+    'info': _check_parse_text info.text
   }
 
 _parse_ok = (info) ->
