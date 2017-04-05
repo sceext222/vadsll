@@ -54,7 +54,7 @@ impl IpHeader {
     // read/write data, as BE
     fn _get_u16(&self, index: usize) -> u16 {
         let mut o = 0;
-        for i in (0..2).rev() {
+        for i in 0..2 {
             o = (o << 8) | (self._d[i + index] as u16);
         }
         o
@@ -62,7 +62,7 @@ impl IpHeader {
 
     fn _get_u32(&self, index: usize) -> u32 {
         let mut o = 0;
-        for i in (0..4).rev() {
+        for i in 0..4 {
             o = (o << 8) | (self._d[i + index] as u32);
         }
         o
@@ -70,7 +70,7 @@ impl IpHeader {
 
     fn _set_u16(&mut self, index: usize, value: u16) {
         let mut t = value;
-        for i in 0..2 {
+        for i in (0..2).rev() {
             self._d[i + index] = (t & 0xff) as u8;
             t = t >> 8;
         }
@@ -78,7 +78,7 @@ impl IpHeader {
 
     fn _set_u32(&mut self, index: usize, value: u32) {
         let mut t = value;
-        for i in 0..4 {
+        for i in (0..4).rev() {
             self._d[i + index] = (t & 0xff) as u8;
             t = t >> 8;
         }

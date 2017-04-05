@@ -2,6 +2,7 @@
 
 path = require 'path'
 net = require 'net'
+child_process = require 'child_process'
 
 async_ = require './async'
 
@@ -13,6 +14,18 @@ write_file = (file_path, text) ->
   tmp_file = file_path + _WRITE_REPLACE_FILE_SUFFIX
   await async_.write_file tmp_file, text
   await async_.mv tmp_file, file_path
+
+# copy file
+cp = (from, to) ->
+  text = await async_.read_file from
+  await write_file to, text
+
+
+# run command and check exit_code is 0  (else will throw Error)
+run_check = (cmd) ->
+  exit_code = await async_.run_cmd cmd
+  if exit_code != 0
+    throw new Error "run command FAILED  (exit_code = #{exit_code})"
 
 
 # TCP connector
@@ -117,11 +130,80 @@ get_mac_addr = (ifname) ->
     Number.parseInt x, 16
   [o, raw.trim()]
 
+set_mtu = (ifname, mtu) ->
+  console.log "vadsll.D: set MTU of #{ifname} to #{mtu} Byte "
+  # TODO
+
+
+call_this_args = (args) ->
+  ['node', process.argv[1]].concat args
+
+# run `vadsll` (this program) with different args
+call_this = (args) ->
+  await run_check call_this_args(args)
+
+# run a child_process, it should be still running after this process exit
+run_detach = (cmd) ->
+  bin = cmd[0]
+  rest = cmd[1..]
+  # DEBUG
+  console.log "  run_detach -> #{cmd.join(' ')}"
+  p = child_process.spawn bin, rest, {
+    stdio: 'inherit'
+    detached: true
+  }
+  p.unref()
+
+kill_pid = (pid_file) ->
+  if await async_.file_exist(pid_file)
+    pid = await async_.read_file pid_file
+    pid = Number.parseInt pid
+
+    console.log "vadsll.D: send SIGTERM to PID #{pid}"
+    process.kill pid, 'SIGTERM'
+
+
+# connect to auth_server
+connect_auth_server = (auth_server) ->
+  t = new TcpC()
+  [auth_ip, auth_port] = auth_server.split(':')
+  auth_port = Number.parseInt auth_port
+  # connecting to auth server
+  await t.connect auth_ip, auth_port
+  t
+
+# pretty-print JSON text
+print_json = (data) ->
+  JSON.stringify data, '', '    '
+
+create_pid_file = (file_path) ->
+  try
+    fd = await async_.fs_open file_path, 'wx'
+  catch e
+    console.log "vadsll.E: can not create PID file #{file_path} "
+    throw e
+  # write PID in file
+  await async_.fs_write fd, (process.pid + '')
+  await async_.fs_close fd
+
 
 module.exports = {
   write_file  # async
+  cp  # async
+  run_check  # async
+
   get_bind_ip  # async
   get_mac_addr  # async
+  set_mtu  # async
+
+  call_this_args
+  call_this  # async
+  run_detach
+  kill_pid  # async
+
+  connect_auth_server  # async
+  print_json
+  create_pid_file  # async
 
   TcpC
 }

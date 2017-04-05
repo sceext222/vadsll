@@ -30,13 +30,64 @@ mv = (from, to) ->
       else
         resolve()
 
+# remove file
+rm = (file_path) ->
+  new Promise (resolve, reject) ->
+    fs.unlink file_path, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
+# check if file exist
+file_exist = (file_path) ->
+  new Promise (resolve, reject) ->
+    fs.access file_path, fs.constants.R_OK, (err) ->
+      if err
+        resolve false
+      else
+        resolve true
+
+mkdir = (file_path) ->
+  new Promise (resolve, reject) ->
+    fs.mkdir file_path, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
+fs_open = (file_path, flags) ->
+  new Promise (resolve, reject) ->
+    fs.open file_path, flags, (err, fd) ->
+      if err
+        reject err
+      else
+        resolve fd
+
+fs_write = (fd, text) ->
+  new Promise (resolve, reject) ->
+    fs.write fd, text, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
+fs_close = (fd) ->
+  new Promise (resolve, reject) ->
+    fs.close fd, (err) ->
+      if err
+        reject err
+      else
+        resolve()
+
+
 # run shell command, pipe stdin -> stdin, stdout -> stdout, stderr -> stderr, return exit_code
 run_cmd = (args) ->
   new Promise (resolve, reject) ->
     cmd = args[0]
     rest = args[1..]
     # DEBUG
-    console.log " run -> #{args.join(' ')}"
+    console.log "  run -> #{args.join(' ')}"
     p = child_process.spawn cmd, rest, {
       stdio: 'inherit'
     }
@@ -51,7 +102,7 @@ call_cmd = (args) ->
     cmd = args[0]
     rest = args[1..]
     # DEBUG
-    console.log " call -> #{args.join(' ')}"
+    console.log "  call -> #{args.join(' ')}"
     p = child_process.spawn cmd, rest, {
       stdio: [process.stdin, 'pipe', process.stderr]
     }
@@ -72,6 +123,12 @@ module.exports = {
   read_file  # async
   write_file  # async
   mv  # async
+  rm  # async
+  file_exist  # async
+  mkdir  # async
+  fs_open  # async
+  fs_write  # async
+  fs_close  # async
 
   run_cmd  # async
   call_cmd  # async
