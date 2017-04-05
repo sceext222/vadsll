@@ -8,7 +8,7 @@ logout_ = ->
   console.log "vadsll: start LOGOUT "
   await util.call_this ['--kill-keep-alive']
 
-  await util.call_this ['--only-login']
+  await util.call_this ['--only-logout']
   await util.call_this ['--nft-reset']
   # set MTU
   await util.set_mtu c.interface, c.ethernet_mtu
