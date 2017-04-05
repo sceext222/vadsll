@@ -17,7 +17,7 @@ write_file = (file_path, text) ->
 # copy file
 cp = (from, to) ->
   text = await async_.read_file from
-  await async_.write_file to, text
+  await write_file to, text
 
 
 # run command and check exit_code is 0  (else will throw Error)
