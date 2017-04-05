@@ -10,6 +10,6 @@
 
   "nfqueue_id": 44001,
   "nft_table": "vadsll",
-  "nft_hook_priority": 110,
+  "nft_hook_priority": 150,
   "#": "config file for VADSLL"
 }

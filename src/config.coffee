@@ -21,8 +21,9 @@ _PATH_LOG = '../../tmp/'  #  tmp/
 
 LOG_SERVER_RES_OK    = 'server_res.OK.json'
 LOG_SERVER_RES_ERR   = 'server_res.err.json'
+# $ sudo nft -f setup.nft
 LOG_NFT_SETUP        = 'setup.nft'
-LOG_NFT_RESET        = 'reset.nft'
+LOG_NFT_RESET        = 'nft_reset.sh'
 LOG_PID_KEEP_ALIVE   = 'keep_alive.pid'
 LOG_PID_ROUTE_FILTER = 'route_filter.pid'
 LOG_SERVER_MSG_TMP   = 'server_msg.gbk'
@@ -31,7 +32,7 @@ LOG_FILE_LIST = [
   LOG_SERVER_RES_OK
   LOG_SERVER_RES_ERR
   LOG_NFT_SETUP
-  LOG_NFT_RESET
+  #LOG_NFT_RESET
 ]
 LOG_OLD_PATH = 'old'
 
