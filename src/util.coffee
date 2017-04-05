@@ -154,6 +154,14 @@ run_detach = (cmd) ->
   }
   p.unref()
 
+kill_pid = (pid_file) ->
+  if await async_.file_exist(pid_file)
+    pid = await async_.read_file pid_file
+    pid = Number.parseInt pid
+
+    console.log "vadsll.D: send SIGTERM to PID #{pid}"
+    process.kill pid, 'SIGTERM'
+
 
 # connect to auth_server
 connect_auth_server = (auth_server) ->
@@ -191,6 +199,7 @@ module.exports = {
   call_this_args
   call_this  # async
   run_detach
+  kill_pid  # async
 
   connect_auth_server  # async
   print_json
