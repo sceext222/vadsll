@@ -83,6 +83,14 @@ class TcpC
       that._socket.end()
       # FIXME TODO error process
 
+  # async
+  wait_err: ->
+    that = this
+    new Promise (resolve, reject) ->
+      that._socket.once 'error', () ->
+        resolve()
+
+
 _parse_ip_addr_output = (raw) ->
   _IP_ADDR_PREFIX = '    inet '
   o = null

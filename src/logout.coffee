@@ -30,8 +30,9 @@ logout = ->
   console.log "vadsll.D: send logout packet (#{data.length} Byte data)"
   await t.send data
 
-  # close socket
-  await t.close()
+  console.log "vadsll.D: waiting server to close socket .. . "
+  await t.wait_err()
+
   # logout done
   console.log "vadsll: [ OK ] logout done."
 
