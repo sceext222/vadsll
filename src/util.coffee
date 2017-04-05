@@ -2,6 +2,7 @@
 
 path = require 'path'
 net = require 'net'
+child_process = require 'child_process'
 
 async_ = require './async'
 
@@ -134,14 +135,24 @@ set_mtu = (ifname, mtu) ->
   # TODO
 
 
+call_this_args = (args) ->
+  ['node', process.argv[1]].concat args
+
 # run `vadsll` (this program) with different args
 call_this = (args) ->
-  cmd = ['node', process.argv[1]].concat args
-  await run_check cmd
+  await run_check call_this_args(args)
 
 # run a child_process, it should be still running after this process exit
 run_detach = (cmd) ->
-  # TODO
+  bin = cmd[0]
+  rest = cmd[1..]
+  # DEBUG
+  console.log "  run_detach -> #{cmd.join(' ')}"
+  p = child_process.spawn bin, rest, {
+    stdio: 'inherit'
+    detached: true
+  }
+  p.unref()
 
 
 # connect to auth_server
@@ -177,6 +188,7 @@ module.exports = {
   get_mac_addr  # async
   set_mtu  # async
 
+  call_this_args
   call_this  # async
   run_detach
 

@@ -87,7 +87,7 @@ run_cmd = (args) ->
     cmd = args[0]
     rest = args[1..]
     # DEBUG
-    console.log " run -> #{args.join(' ')}"
+    console.log "  run -> #{args.join(' ')}"
     p = child_process.spawn cmd, rest, {
       stdio: 'inherit'
     }
@@ -102,7 +102,7 @@ call_cmd = (args) ->
     cmd = args[0]
     rest = args[1..]
     # DEBUG
-    console.log " call -> #{args.join(' ')}"
+    console.log "  call -> #{args.join(' ')}"
     p = child_process.spawn cmd, rest, {
       stdio: [process.stdin, 'pipe', process.stderr]
     }
