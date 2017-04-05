@@ -25,6 +25,7 @@ LOG_NFT_SETUP        = 'setup.nft'
 LOG_NFT_RESET        = 'reset.nft'
 LOG_PID_KEEP_ALIVE   = 'keep_alive.pid'
 LOG_PID_ROUTE_FILTER = 'route_filter.pid'
+LOG_SERVER_MSG_TMP   = 'server_msg.gbk'
 
 LOG_FILE_LIST = [
   LOG_SERVER_RES_OK
@@ -80,6 +81,7 @@ module.exports = {
   LOG_NFT_RESET
   LOG_PID_KEEP_ALIVE
   LOG_PID_ROUTE_FILTER
+  LOG_SERVER_MSG_TMP
 
   LOG_FILE_LIST
   LOG_OLD_PATH

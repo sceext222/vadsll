@@ -34,6 +34,12 @@ _create_log = (res, c, ip_a, mac_str) ->
     log_file = path.join config.get_log_path(), config.LOG_SERVER_RES_ERR
   await util.write_file log_file, util.print_json(o) + '\n'
 
+_decode_server_msg = (raw) ->
+  b64 = raw.split('base64:')[1].trim()
+  tmp_file = path.join config.get_log_path(), config.LOG_SERVER_MSG_TMP
+  await util.write_file tmp_file, Buffer.from(b64, 'base64')
+  result = await async_.call_cmd ['iconv', '-f', 'gbk', '-t', 'utf-8', tmp_file]
+
 
 # async
 only_login = ->
@@ -67,7 +73,10 @@ only_login = ->
 
   # check login OK
   if res.type == 'error'
-    console.log "vadsll: ERROR: login failed: #{res.info}"
+    info = res.info
+    if info.startsWith 'base64:'
+      info = await _decode_server_msg info
+    console.log "vadsll: ERROR: login failed: #{info}"
     # close socket
     await t.close()
     return
