@@ -1,11 +1,38 @@
 # vadsll.coffee, vadsll/src/
 
 
+VADSLL_VERSION = 'vadsll version 0.1.0-1 test20170406 1440'
+
 _print_help = ->
-  # TODO
+  console.log '''
+  vadsll: Virtual ADSL tools for Linux
+  Usage:
+      --login              The complete LOGIN process
+      --logout             The complete LOGOUT process
+
+      --only-login         Only send LOGIN packet to auth server
+      --only-logout        Only send LOGOUT packet to auth server
+      --nft-gen            Generate nftables rules
+      --nft-init           Setup nftables rules
+      --nft-reset          Reset nftables rules
+      --log-backup         Backup log files
+      --log-clean          Clean log files
+      --run-keep-alive     Run KEEP-ALIVE in background
+      --run-route-filter   Run route_filter in background
+      --route-filter       Daemon of route_filter
+      --keep-alive         Daemon of KEEP-ALIVE
+      --once-keep-alive    Only send KEEP-ALIVE packet to auth server ONCE
+      --kill-keep-alive    Kill KEEP-ALIVE daemon
+      --kill-route-filter  Kill route_filter daemon
+
+      --help               Show this help text
+      --version            Show version of this program
+
+  vadsll: <https://github.com/sceext222/vadsll>
+  '''
 
 _print_version = ->
-  # TODO
+  console.log VADSLL_VERSION
 
 main = (argv) ->
   switch argv[0]

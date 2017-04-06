@@ -86,6 +86,6 @@ only_login = ->
   # close socket
   await t.close()
   # logout done
-  console.log "vadsll: [ OK ] only-logout success "
+  console.log "vadsll: [ OK ] only-login success "
 
 module.exports = only_login  # async
