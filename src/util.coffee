@@ -193,12 +193,9 @@ create_pid_file = (file_path) ->
 
 # load config.json
 load_config = ->
-  if _is_local_installed()
-    config_file = path.join _PATH_LOCAL_ETC, _CONFIG_FILE
-  else
-    config_file = _path_pretty_print path.join(__dirname, _PATH_ETC, _CONFIG_FILE)
+  config_file = config.get_config_file_path()
   # DEBUG
-  if ! is_slave()
+  if ! config.is_slave()
     # FIXME
     console.log "vadsll.D: load config file #{config_file}"
   text = await async_.read_file config_file

@@ -43,6 +43,14 @@ _is_local_installed = ->
 _path_pretty_print = (raw) ->
   path.relative path.resolve('.'), raw
 
+get_config_file_path = ->
+  if _is_local_installed()
+    o = path.join _PATH_LOCAL_ETC, _CONFIG_FILE
+  else
+    o = _path_pretty_print path.join(__dirname, _PATH_ETC, _CONFIG_FILE)
+  o
+
+
 # global data
 _gd = {
   # config.json data
@@ -89,6 +97,7 @@ module.exports = {
   LOG_FILE_LIST
   LOG_OLD_PATH
 
+  get_config_file_path
   set_config
   get_config
   get_log_path
