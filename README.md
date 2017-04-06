@@ -8,20 +8,20 @@ Virtual ADSL tools for Linux
 
 ## Usage
 
-1. Install some softwares
++ **1**. Install some softwares
   (under [`ArchLinux`](https://www.archlinux.org/))
 
   ```
   $ sudo pacman -S --needed nftables libnetfilter_queue nodejs npm rust cargo git make
   ```
 
-2. Download source code
++ **2**. Download source code
 
   ```
   $ git clone https://github.com/sceext222/vadsll --single-branch --depth=1
   ```
 
-3. Build from source
++ **3**. Build from source
 
   ```
   $ cd vadsll
@@ -29,13 +29,13 @@ Virtual ADSL tools for Linux
   $ make build
   ```
 
-4. Install
++ **4**. Install
 
   ```
   $ sudo make install
   ```
 
-5. Modify config file
++ **5**. Modify config file
 
   ```
   $ cd /usr/local/etc/vadsll
@@ -43,13 +43,13 @@ Virtual ADSL tools for Linux
   $ sudo vim config.json
   ```
 
-6. Login
++ **6**. Login
 
   ```
   $ sudo systemctl start vadsll
   ```
 
-7. Logout
++ **7**. Logout
 
   ```
   $ sudo systemctl stop vadsll

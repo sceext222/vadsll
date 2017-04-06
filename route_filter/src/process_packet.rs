@@ -11,7 +11,7 @@ use header::HeaderP;
 
 
 // # command line process part
-const P_VERSION: &'static str = "vadsll: route_filter version 0.1.0-1 test20170404 2020";
+const P_VERSION: &'static str = "vadsll: route_filter version 0.1.0 test20170406 2208";
 // command line arguments and usage
 fn _print_help() {
     println!("{}",
