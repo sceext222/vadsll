@@ -1,0 +1,9 @@
+[Unit]
+Description=vadsll login service
+
+[Service]
+Type=forking
+PIDFile=/var/log/vadsll/route_filter.pid
+ExecStart=/usr/bin/node /usr/local/lib/vadsll/vadsll/vadsll.js --login
+ExecStop=/usr/bin/node /usr/local/lib/vadsll/vadsll/vadsll.js --logout
+Restart=no

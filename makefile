@@ -4,6 +4,7 @@ DIST=dist
 INSTALL_DIR=/usr/local/lib/vadsll
 INSTALL_ETC=/usr/local/etc/vadsll
 INSTALL_LOG=/var/log/vadsll
+INSTALL_SYSTEMD_UNIT_DIR=/usr/lib/systemd/system
 
 
 target: build
@@ -39,11 +40,14 @@ install:
 
 	cp -r $(DIST)/* -t $(INSTALL_DIR)
 	cp etc/* -t $(INSTALL_ETC)
+
+	cp systemd/vadsll.service $(INSTALL_SYSTEMD_UNIT_DIR)/
 .PHONY: install
 
 # $ sudo make uninstall
 uninstall:
-	rm -r $(INSTALL_DIR)
+	- rm -r $(INSTALL_DIR)
+	- rm $(INSTALL_SYSTEMD_UNIT_DIR)/vadsll.service
 .PHONY: uninstall
 
 clean:
