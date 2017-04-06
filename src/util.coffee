@@ -191,6 +191,20 @@ create_pid_file = (file_path) ->
   await async_.fs_write fd, (process.pid + '')
   await async_.fs_close fd
 
+# load config.json
+load_config = ->
+  if _is_local_installed()
+    config_file = path.join _PATH_LOCAL_ETC, _CONFIG_FILE
+  else
+    config_file = _path_pretty_print path.join(__dirname, _PATH_ETC, _CONFIG_FILE)
+  # DEBUG
+  if ! is_slave()
+    # FIXME
+    console.log "vadsll.D: load config file #{config_file}"
+  text = await async_.read_file config_file
+  config_data = JSON.parse text
+  config.set_config config_data
+
 
 module.exports = {
   write_file  # async
@@ -209,6 +223,8 @@ module.exports = {
   connect_auth_server  # async
   print_json
   create_pid_file  # async
+
+  load_config  # async
 
   TcpC
 }

@@ -9,7 +9,7 @@ packet_util = require '../packet_util'
 
 once_keep_alive = ->
   # load config
-  c = await config.load()
+  c = await util.load_config()
   # get IP addr
   ip = await util.get_bind_ip c.interface
   # DEBUG config

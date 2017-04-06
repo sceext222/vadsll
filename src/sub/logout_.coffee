@@ -5,7 +5,7 @@ config = require '../config'
 log = require '../log'
 
 logout_ = ->
-  c = await config.load()
+  c = await util.load_config()
   log.p "start LOGOUT "
   await util.call_this ['--slave', '--kill-keep-alive']
 

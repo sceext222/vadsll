@@ -44,7 +44,7 @@ _decode_server_msg = (raw) ->
 
 only_login = ->
   # load config
-  c = await config.load()
+  c = await util.load_config()
   # DEBUG config
   log.d "auth_server = #{c.auth_server}, interface = #{c.interface}, account = #{c.account}"
 

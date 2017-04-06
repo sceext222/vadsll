@@ -1,8 +1,5 @@
 # config.coffee, vadsll/src/
-
 path = require 'path'
-
-async_ = require './async'
 
 # static config
 
@@ -54,19 +51,9 @@ _gd = {
   # if this process is running in --slave mode
   slave: false
 }
-# load config.json
-load = ->
-  if _is_local_installed()
-    config_file = path.join _PATH_LOCAL_ETC, _CONFIG_FILE
-  else
-    config_file = _path_pretty_print path.join(__dirname, _PATH_ETC, _CONFIG_FILE)
-  # DEBUG
-  if ! is_slave()
-    # FIXME
-    console.log "vadsll.D: load config file #{config_file}"
-  text = await async_.read_file config_file
-  _gd.config_data = JSON.parse text
 
+set_config = (data) ->
+  _gd.config_data = data
 get_config = ->
   _gd.config_data
 
@@ -102,8 +89,7 @@ module.exports = {
   LOG_FILE_LIST
   LOG_OLD_PATH
 
-  load  # async
-
+  set_config
   get_config
   get_log_path
   get_route_filter_bin

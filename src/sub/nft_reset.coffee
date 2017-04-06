@@ -5,7 +5,7 @@ config = require '../config'
 
 
 nft_reset = ->
-  c = await config.load()
+  c = await util.load_config()
   table_name = c.nft_table
 
   # neet root privilege

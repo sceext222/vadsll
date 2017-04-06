@@ -23,7 +23,7 @@ _once_keep_alive = ->
   await util.call_this ['--slave', '--once-keep-alive']
 
 keep_alive = ->
-  c = await config.load()
+  c = await util.load_config()
   # create PID file
   await util.create_pid_file _pid_file()
 

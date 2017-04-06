@@ -46,7 +46,7 @@ _on_exit = ->
   process.exit(0)
 
 route_filter = ->
-  c = await config.load()
+  c = await util.load_config()
   # create PID file
   await util.create_pid_file _pid_file()
 

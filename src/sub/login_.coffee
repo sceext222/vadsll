@@ -5,7 +5,7 @@ config = require '../config'
 log = require '../log'
 
 login_ = ->
-  c = await config.load()
+  c = await util.load_config()
   log.p "start LOGIN "
 
   await util.call_this ['--slave', '--log-backup']
