@@ -36,7 +36,7 @@ c:
 install:
 	mkdir -p $(INSTALL_DIR)
 	mkdir -p $(INSTALL_ETC)
-	mkdir -p $(INSTALL_LOG)
+	mkdir -p $(INSTALL_LOG)/old
 
 	cp -r $(DIST)/* -t $(INSTALL_DIR)
 	cp etc/* -t $(INSTALL_ETC)
