@@ -6,6 +6,7 @@ child_process = require 'child_process'
 async_ = require '../async'
 util = require '../util'
 config = require '../config'
+log = require '../log'
 
 # global data
 _gd = {
@@ -27,7 +28,7 @@ _spawn = (args) ->
     pid = _gd.p.pid
     _gd.p = null
     if ! _gd.exit_flag
-      console.log "vadsll.D: child process exit (PID #{pid}  route_filter)"
+      log.d "child process exit (PID #{pid}  route_filter)"
       _on_exit()
 
 
@@ -38,7 +39,7 @@ _on_exit = ->
   _gd.exit_flag = true
   if _gd.p?
     pid = _gd.p.pid
-    console.log "vadsll.D: send SIGKILL to PID #{pid} (route_filter) "
+    log.d "send SIGKILL to PID #{pid} (route_filter) "
     process.kill pid, 'SIGKILL'
   # remove PID file
   await async_.rm _pid_file()
@@ -66,7 +67,7 @@ route_filter = ->
   _spawn args
   # set exit event listener
   process.on 'SIGTERM', () ->
-    console.log "vadsll.D: receive SIGTERM, exiting .. . "
+    log.d "receive SIGTERM, exiting .. . "
     _on_exit()
 
 module.exports = route_filter  # async

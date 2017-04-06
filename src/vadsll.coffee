@@ -1,7 +1,9 @@
 # vadsll.coffee, vadsll/src/
 
+p_args = require './p_args'
 
-VADSLL_VERSION = 'vadsll version 0.1.0-1 test20170406 1440'
+
+VADSLL_VERSION = 'vadsll version 0.1.0-2 test20170406 1852'
 
 _print_help = ->
   console.log '''
@@ -35,7 +37,7 @@ _print_version = ->
   console.log VADSLL_VERSION
 
 main = (argv) ->
-  switch argv[0]
+  switch p_args(argv)
     when '--only-login'
       await require('./sub/only_login')()
     when '--only-logout'

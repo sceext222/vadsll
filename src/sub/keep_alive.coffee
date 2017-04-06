@@ -5,6 +5,7 @@ path = require 'path'
 async_ = require '../async'
 util = require '../util'
 config = require '../config'
+log = require '../log'
 
 
 _pid_file = ->
@@ -14,12 +15,12 @@ _on_exit = ->
   # remove PID file
   await async_.rm _pid_file()
 
-  console.log "vadsll.D: receive SIGTERM, exiting .. . "
+  log.d "receive SIGTERM, exiting .. . "
   process.exit(0)
 
 _once_keep_alive = ->
-  console.log "vadsll.D: once keep-alive at #{new Date()}"
-  await util.call_this ['--once-keep-alive']
+  log.d "once keep-alive at #{new Date()}"
+  await util.call_this ['--slave', '--once-keep-alive']
 
 keep_alive = ->
   c = await config.load()
@@ -31,6 +32,6 @@ keep_alive = ->
     _on_exit()
   # set once_keep_alive callback
   setInterval _once_keep_alive, 1e3 * c.keep_alive_timeout_s
-  console.log "vadsll.D: start send keep-alive every #{c.keep_alive_timeout_s} s "
+  log.d "start send keep-alive every #{c.keep_alive_timeout_s} s "
 
 module.exports = keep_alive  # async

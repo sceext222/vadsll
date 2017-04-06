@@ -6,6 +6,7 @@ path = require 'path'
 async_ = require '../async'
 util = require '../util'
 config = require '../config'
+log = require '../log'
 packet_util = require '../packet_util'
 
 
@@ -45,24 +46,24 @@ only_login = ->
   # load config
   c = await config.load()
   # DEBUG config
-  console.log "vadsll.D: auth_server = #{c.auth_server}, interface = #{c.interface}, account = #{c.account}"
+  log.d "auth_server = #{c.auth_server}, interface = #{c.interface}, account = #{c.account}"
 
   # get IP addr and MAC address
   ip = await util.get_bind_ip c.interface
   [mac, mac_str] = await util.get_mac_addr c.interface
-  console.log "vadsll.D: IP addr = #{ip.join('.')}, MAC addr = #{mac_str}"
+  log.d "IP addr = #{ip.join('.')}, MAC addr = #{mac_str}"
   # make login data
   data = packet_util.make_login_msg mac, ip, c.account, c.password
 
   # connecting to auth server and send data
   t = await util.connect_auth_server c.auth_server
-  console.log "vadsll.D: send login packet (#{data.length} Byte data)"
+  log.d "send login packet (#{data.length} Byte data)"
   await t.send data
 
   # wait server response
-  console.log "vadsll.D: waiting server response .. . "
+  log.d "waiting server response .. . "
   [head, body] = await _recv_packet t
-  console.log "vadsll.D: server response (#{head.length + body.length} Byte data)"
+  log.d "server response (#{head.length + body.length} Byte data)"
   # parse server data
   res = packet_util.parse_server_msg head, body
   # DEBUG
@@ -75,17 +76,17 @@ only_login = ->
     info = res.info
     if info.startsWith 'base64:'
       info = await _decode_server_msg info
-    console.log "vadsll: ERROR: login failed: #{info}"
+    log.p "ERROR: login failed: #{info}"
     # close socket
     await t.close()
     return
   # login OK, send ACK msg
   ack = packet_util.login_ack()
-  console.log "vadsll.D: send ACK (#{ack.length} Byte data)"
+  log.d "send ACK (#{ack.length} Byte data)"
   await t.send ack
   # close socket
   await t.close()
-  # logout done
-  console.log "vadsll: [ OK ] only-login success "
+  # login done
+  log.p "[ OK ] only-login success "
 
 module.exports = only_login  # async

@@ -4,6 +4,8 @@
 fs = require 'fs'
 child_process = require 'child_process'
 
+log = require './log'
+
 
 read_file = (file_path) ->
   new Promise (resolve, reject) ->

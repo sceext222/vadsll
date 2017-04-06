@@ -5,6 +5,8 @@ net = require 'net'
 child_process = require 'child_process'
 
 async_ = require './async'
+config = require './config'
+log = require './log'
 
 
 _WRITE_REPLACE_FILE_SUFFIX = '.tmp'
@@ -43,13 +45,13 @@ class TcpC
       # save addr
       that._addr = ip + ':' + port
       # DEBUG
-      console.log "vadsll.D: connect TCP to #{that._addr}"
+      log.d "connect TCP to #{that._addr}"
       that._socket = net.connect port, ip, () ->
         that._socket.setNoDelay(true)
         resolve()
       that._socket.on 'error', (err) ->
         # FIXME DEBUG
-        console.log "vadsll.E: TCP connection to #{that._addr}, ERROR: #{err}"
+        log.e "TCP connection to #{that._addr}, ERROR: #{err}"
         reject err
   # async
   send: (data) ->
@@ -131,16 +133,19 @@ get_mac_addr = (ifname) ->
   [o, raw.trim()]
 
 set_mtu = (ifname, mtu) ->
-  console.log "vadsll.D: set MTU of #{ifname} to #{mtu} Byte "
+  log.d "set MTU of #{ifname} to #{mtu} Byte "
   await run_check ['ip', 'link', 'set', ifname, 'mtu', mtu]
 
 
-call_this_args = (args) ->
-  ['node', process.argv[1]].concat args
+call_this_args = (args, no_slave) ->
+  o = ['node', process.argv[1]]
+  if (! no_slave) and config.is_slave()
+    o.push config.FLAG_SLAVE
+  o.concat args
 
 # run `vadsll` (this program) with different args
-call_this = (args) ->
-  await run_check call_this_args(args)
+call_this = (args, no_slave) ->
+  await run_check call_this_args(args, no_slave)
 
 # run a child_process, it should be still running after this process exit
 run_detach = (cmd) ->
@@ -159,7 +164,7 @@ kill_pid = (pid_file) ->
     pid = await async_.read_file pid_file
     pid = Number.parseInt pid
 
-    console.log "vadsll.D: send SIGTERM to PID #{pid}"
+    log.d "send SIGTERM to PID #{pid}"
     process.kill pid, 'SIGTERM'
 
 
@@ -180,7 +185,7 @@ create_pid_file = (file_path) ->
   try
     fd = await async_.fs_open file_path, 'wx'
   catch e
-    console.log "vadsll.E: can not create PID file #{file_path} "
+    log.e "can not create PID file #{file_path} "
     throw e
   # write PID in file
   await async_.fs_write fd, (process.pid + '')

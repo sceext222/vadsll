@@ -46,8 +46,14 @@ _is_local_installed = ->
 _path_pretty_print = (raw) ->
   path.relative path.resolve('.'), raw
 
-# config.json data
-_config_data = null
+# global data
+_gd = {
+  # config.json data
+  config_data: null
+
+  # if this process is running in --slave mode
+  slave: false
+}
 # load config.json
 load = ->
   if _is_local_installed()
@@ -55,12 +61,14 @@ load = ->
   else
     config_file = _path_pretty_print path.join(__dirname, _PATH_ETC, _CONFIG_FILE)
   # DEBUG
-  console.log "vadsll.D: load config file #{config_file}"
+  if ! is_slave()
+    log = require './log'
+    log.d "load config file #{config_file}"
   text = await async_.read_file config_file
-  _config_data = JSON.parse text
+  _gd.config_data = JSON.parse text
 
 get_config = ->
-  _config_data
+  _gd.config_data
 
 get_log_path = ->
   if _is_local_installed()
@@ -73,6 +81,13 @@ get_route_filter_bin = ->
     path.normalize path.join(_PATH_LOCAL_DIST, _BIN_ROUTE_FILTER)
   else
     _path_pretty_print path.join(__dirname, _PATH_DIST, _BIN_ROUTE_FILTER)
+
+FLAG_SLAVE = '--slave'
+
+set_slave = (slave) ->
+  _gd.slave = slave
+is_slave = ->
+  _gd.slave
 
 
 module.exports = {
@@ -92,4 +107,8 @@ module.exports = {
   get_config
   get_log_path
   get_route_filter_bin
+
+  FLAG_SLAVE
+  set_slave
+  is_slave
 }

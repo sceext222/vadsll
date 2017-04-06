@@ -1,24 +1,25 @@
-# login_.coffee, vadsll
+# login_.coffee, vadsll/src/
 
 util = require '../util'
 config = require '../config'
+log = require '../log'
 
 login_ = ->
   c = await config.load()
-  console.log "vadsll: start LOGIN "
+  log.p "start LOGIN "
 
-  await util.call_this ['--log-backup']
-  await util.call_this ['--log-clean']
+  await util.call_this ['--slave', '--log-backup']
+  await util.call_this ['--slave', '--log-clean']
 
-  await util.call_this ['--only-login']
-  await util.call_this ['--nft-gen']
+  await util.call_this ['--slave', '--only-login']
+  await util.call_this ['--slave', '--nft-gen']
   # set MTU
   await util.set_mtu c.interface, c.vadsl_mtu
-  await util.call_this ['--nft-init']
+  await util.call_this ['--slave', '--nft-init']
 
-  await util.call_this ['--run-keep-alive']
-  await util.call_this ['--run-route-filter']
+  await util.call_this ['--slave', '--run-keep-alive']
+  await util.call_this ['--slave', '--run-route-filter']
 
-  console.log "vadsll: [ OK ] login done. "
+  log.p "[ OK ] login done. "
 
 module.exports = login_  # async
