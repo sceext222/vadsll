@@ -62,8 +62,8 @@ load = ->
     config_file = _path_pretty_print path.join(__dirname, _PATH_ETC, _CONFIG_FILE)
   # DEBUG
   if ! is_slave()
-    log = require './log'
-    log.d "load config file #{config_file}"
+    # FIXME
+    console.log "vadsll.D: load config file #{config_file}"
   text = await async_.read_file config_file
   _gd.config_data = JSON.parse text
 
