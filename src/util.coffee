@@ -138,7 +138,7 @@ set_mtu = (ifname, mtu) ->
 
 
 call_this_args = (args, no_slave) ->
-  o = ['node', process.argv[1]]
+  o = [process.argv[0], process.argv[1]]
   if (! no_slave) and config.is_slave()
     o.push config.FLAG_SLAVE
   o.concat args
