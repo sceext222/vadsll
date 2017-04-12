@@ -1,10 +1,11 @@
 
+INSTALL_SYSTEMD_UNIT_DIR=/usr/lib/systemd/system
+
 DIST=dist
 
 INSTALL_DIR=/usr/local/lib/vadsll
 INSTALL_ETC=/usr/local/etc/vadsll
 INSTALL_LOG=/var/log/vadsll
-INSTALL_SYSTEMD_UNIT_DIR=/usr/lib/systemd/system
 
 
 target: build
@@ -38,6 +39,7 @@ install:
 	mkdir -p $(INSTALL_ETC)
 	mkdir -p $(INSTALL_LOG)/old
 
+	cp -r node_modules -t $(INSTALL_DIR)
 	cp -r $(DIST)/* -t $(INSTALL_DIR)
 	cp etc/* -t $(INSTALL_ETC)
 

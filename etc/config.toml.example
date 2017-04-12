@@ -1,0 +1,18 @@
+# config file for VADSLL
+
+interface = "enp0s3"
+account = "<your-account>"
+password = "<your-password>"
+
+
+# !!! ADVANCED config (DO NOT edit !!!)
+auth_server = "<auth-server-IP>:1812"
+ethernet_mtu = 1500
+vadsl_mtu = 1476
+keep_alive_timeout_s = 300
+
+nfqueue_id = 44001
+nft_table = "vadsll"
+nft_hook_priority = 150
+
+# end config.toml

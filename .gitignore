@@ -1,6 +1,7 @@
 
 dist/
 /etc/config.json
+/etc/config.toml
 tmp/
 
 # node.js (npm)
