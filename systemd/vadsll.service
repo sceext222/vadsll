@@ -6,6 +6,6 @@ Environment=NODE=/usr/bin/node
 
 Type=forking
 PIDFile=/var/log/vadsll/route_filter.pid
-ExecStart=$NODE /usr/local/lib/vadsll/vadsll/vadsll.js --login
-ExecStop=$NODE /usr/local/lib/vadsll/vadsll/vadsll.js --logout
+ExecStart=/usr/bin/env $NODE /usr/local/lib/vadsll/vadsll/vadsll.js --login
+ExecStop=/usr/bin/env $NODE /usr/local/lib/vadsll/vadsll/vadsll.js --logout
 Restart=no
