@@ -5,7 +5,7 @@ path = require 'path'
 
 # paths
 _BIN_ROUTE_FILTER = 'route_filter'  #  dist/route_filter
-_CONFIG_FILE = 'config.json'        #  etc/config.json
+_CONFIG_FILE = 'config.toml'        #  etc/config.toml
 _LOCAL_INSTALL_PREFIX = '/usr/local/'
 # paths (installed to /usr/local/)
 _PATH_LOCAL_DIST = '/usr/local/lib/vadsll/'

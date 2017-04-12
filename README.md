@@ -5,24 +5,23 @@ Virtual ADSL tools for Linux
 ## Description
 (虚拟 ADSL)
 
+(`zh_CN`) *中文安装说明* (TODO)
 
-## Usage
+
+## Install
+(Under [`ArchLinux`](https://www.archlinux.org/))
 
 + **1**. Install some softwares
-  (under [`ArchLinux`](https://www.archlinux.org/))
-
   ```
   $ sudo pacman -S --needed nftables libnetfilter_queue nodejs npm rust cargo git make
   ```
 
 + **2**. Download source code
-
   ```
   $ git clone https://github.com/sceext222/vadsll --single-branch --depth=1
   ```
 
 + **3**. Build from source
-
   ```
   $ cd vadsll
   $ make init
@@ -30,31 +29,29 @@ Virtual ADSL tools for Linux
   ```
 
 + **4**. Install
-
   ```
   $ sudo make install
   ```
 
 + **5**. Modify config file
-
   ```
   $ cd /usr/local/etc/vadsll
-  $ sudo cp config.json.example config.json
-  $ sudo vim config.json
+  $ sudo cp config.toml.example config.toml
+  $ sudo vim config.toml
   ```
 
-+ **6**. Login
 
+## Usage
+
++ Login
   ```
   $ sudo systemctl start vadsll
   ```
 
-+ **7**. Logout
-
++ Logout
   ```
   $ sudo systemctl stop vadsll
   ```
-
 
 ```
 $ node /usr/local/lib/vadsll/vadsll/vadsll.js --help

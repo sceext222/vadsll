@@ -4,6 +4,8 @@ path = require 'path'
 net = require 'net'
 child_process = require 'child_process'
 
+toml = require 'toml'
+
 async_ = require './async'
 config = require './config'
 log = require './log'
@@ -196,10 +198,9 @@ load_config = ->
   config_file = config.get_config_file_path()
   # DEBUG
   if ! config.is_slave()
-    # FIXME
     console.log "vadsll.D: load config file #{config_file}"
   text = await async_.read_file config_file
-  config_data = JSON.parse text
+  config_data = toml.parse text
   config.set_config config_data
 
 
