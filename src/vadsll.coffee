@@ -3,7 +3,7 @@
 p_args = require './p_args'
 
 
-VADSLL_VERSION = 'vadsll version 0.1.0 test20170406 2208'
+VADSLL_VERSION = 'vadsll version 0.2.0 test20170412 1616'
 
 _print_help = ->
   console.log '''
