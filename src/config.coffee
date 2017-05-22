@@ -3,53 +3,70 @@ path = require 'path'
 
 # static config
 
-# paths
-_BIN_ROUTE_FILTER = 'route_filter'  #  dist/route_filter
-_CONFIG_FILE = 'config.toml'        #  etc/config.toml
-_LOCAL_INSTALL_PREFIX = '/usr/local/'
-# paths (installed to /usr/local/)
-_PATH_LOCAL_DIST = '/usr/local/lib/vadsll/'
-_PATH_LOCAL_ETC = '/usr/local/etc/vadsll/'
-_PATH_LOCAL_LOG = '/var/log/vadsll/'
-# paths (not installed, from this file: `config.js`)
-_PATH_DIST = '../'        #  dist/vadsll/config.js
-_PATH_ETC = '../../etc/'  #  etc/config.json
-_PATH_LOG = '../../tmp/'  #  tmp/
+# dirs for vadsll files
+_DIR = {
+  system: {
+    lib: '/usr/lib/vadsll'
+    bin: '/usr/bin'
+    etc: '/etc/vadsll'
+    log: '/var/log/vadsll'
+    run: '/run/vadsll'
+    _prefix: '/usr/lib/'
+  }
+  test: {  # from this file (`config.js`)
+    lib: '../'        # dist/vadsll/config.js
+    bin: '../../os'   # os/
+    etc: '../../etc'  # etc/config.json
+    log: '../../tmp'  # tmp/
+    run: '../../tmp'
+  }
+}
+# file paths
+FILE = {
+  config: 'config.toml'         # ETC/config.toml
+  route_filter: 'route_filter'  # LIB/route_filter
+  log: {  # LOG/
+    server_res_ok: 'server_res.OK.json'
+    server_res_err: 'server_res.err.json'
+    server_msg_tmp: 'server_msg.gbk'
+  }
+  nft: {  # LOG/  $ sudo nft -f setup.nft
+    setup: 'setup.nft'
+    reset: 'nft_reset.sh'
+  }
+  pid: {  # RUN/  PID file
+    keep_alive: 'keep_alive.pid'
+    route_filter: 'route_filter.pid'
+  }
+}
 
-LOG_SERVER_RES_OK    = 'server_res.OK.json'
-LOG_SERVER_RES_ERR   = 'server_res.err.json'
-# $ sudo nft -f setup.nft
-LOG_NFT_SETUP        = 'setup.nft'
-LOG_NFT_RESET        = 'nft_reset.sh'
-LOG_PID_KEEP_ALIVE   = 'keep_alive.pid'
-LOG_PID_ROUTE_FILTER = 'route_filter.pid'
-LOG_SERVER_MSG_TMP   = 'server_msg.gbk'
-
-LOG_FILE_LIST = [
-  LOG_SERVER_RES_OK
-  LOG_SERVER_RES_ERR
-  LOG_NFT_SETUP
-  #LOG_NFT_RESET
+LOG_FILE_LIST = [  # LOG/
+  FILE.log.server_res_ok
+  FILE.log.server_res_err
+  FILE.nft.setup
+  #FILE.nft.reset
 ]
 LOG_OLD_PATH = 'old'
 
 
-_is_local_installed = ->
+_is_system_install = ->
   d = path.resolve __dirname
-  if d.startsWith _LOCAL_INSTALL_PREFIX
+  if d.startsWith _DIR.system._prefix
     return true
   false
 
 _path_pretty_print = (raw) ->
   path.relative path.resolve('.'), raw
 
-get_config_file_path = ->
-  if _is_local_installed()
-    o = path.join _PATH_LOCAL_ETC, _CONFIG_FILE
+get_dir = (dir) ->
+  if _is_system_install()
+    o = _DIR.system[dir]
   else
-    o = _path_pretty_print path.join(__dirname, _PATH_ETC, _CONFIG_FILE)
+    o = _path_pretty_print path.join(__dirname, _DIR.test[dir])
   o
 
+get_file_path = (dir, file) ->
+  path.join get_dir(dir), file
 
 # global data
 _gd = {
@@ -58,6 +75,8 @@ _gd = {
 
   # if this process is running in --slave mode
   slave: false
+  # this process drop to UID (and GID)
+  drop: null
 }
 
 set_config = (data) ->
@@ -65,45 +84,33 @@ set_config = (data) ->
 get_config = ->
   _gd.config_data
 
-get_log_path = ->
-  if _is_local_installed()
-    path.normalize _PATH_LOCAL_LOG
-  else
-    _path_pretty_print path.join(__dirname, _PATH_LOG)
-
-get_route_filter_bin = ->
-  if _is_local_installed()
-    path.normalize path.join(_PATH_LOCAL_DIST, _BIN_ROUTE_FILTER)
-  else
-    _path_pretty_print path.join(__dirname, _PATH_DIST, _BIN_ROUTE_FILTER)
-
 FLAG_SLAVE = '--slave'
+FLAG_DROP = '--drop'
 
 set_slave = (slave) ->
   _gd.slave = slave
 is_slave = ->
   _gd.slave
+set_drop = (uid) ->
+  _gd.drop = uid
+get_drop = ->
+  _gd.drop
 
 
 module.exports = {
-  LOG_SERVER_RES_OK
-  LOG_SERVER_RES_ERR
-  LOG_NFT_SETUP
-  LOG_NFT_RESET
-  LOG_PID_KEEP_ALIVE
-  LOG_PID_ROUTE_FILTER
-  LOG_SERVER_MSG_TMP
-
+  FILE
   LOG_FILE_LIST
   LOG_OLD_PATH
 
-  get_config_file_path
+  get_dir
+  get_file_path
   set_config
   get_config
-  get_log_path
-  get_route_filter_bin
 
   FLAG_SLAVE
+  FLAG_DROP
   set_slave
   is_slave
+  set_drop
+  get_drop
 }
