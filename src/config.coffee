@@ -24,6 +24,7 @@ _DIR = {
 # file paths
 FILE = {
   config: 'config.toml'         # ETC/config.toml
+  passwd: 'shadow'              # ETC/shadow
   route_filter: 'route_filter'  # LIB/route_filter
   log: {  # LOG/
     server_res_ok: 'server_res.OK.json'
@@ -86,6 +87,8 @@ get_config = ->
 
 FLAG_SLAVE = '--slave'
 FLAG_DROP = '--drop'
+# the system user to run vadsll in drop mode
+SYSTEM_USER = 'vadsll'
 
 set_slave = (slave) ->
   _gd.slave = slave
@@ -103,6 +106,8 @@ module.exports = {
   LOG_OLD_PATH
 
   is_system_install
+  SYSTEM_USER
+
   get_dir
   get_file_path
   set_config

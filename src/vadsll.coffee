@@ -1,9 +1,10 @@
 # vadsll.coffee, vadsll/src/
 
 p_args = require './p_args'
+util = require './util'
 
 
-VADSLL_VERSION = 'vadsll version 0.2.0 test20170412 1616'
+VADSLL_VERSION = 'vadsll version 1.0.0-1 test20170524 0101'
 
 _print_help = ->
   console.log '''
@@ -12,6 +13,7 @@ _print_help = ->
       --login              The complete LOGIN process
       --logout             The complete LOGOUT process
 
+      --init               Do init in system install mode
       --only-login         Only send LOGIN packet to auth server
       --only-logout        Only send LOGOUT packet to auth server
       --nft-gen            Generate nftables rules
@@ -37,39 +39,77 @@ _print_version = ->
   console.log VADSLL_VERSION
 
 main = (argv) ->
+  # DROP before run sub
   switch p_args(argv)
+    when '--init'
+      # NOT really drop
+      util.check_drop false
+      await require('./sub/init')()
     when '--only-login'
-      await require('./sub/only_login')()
+      # load passwd before drop
+      passwd = await util.read_passwd()
+      # DROP
+      util.check_drop true
+      await require('./sub/only_login')(passwd)
     when '--only-logout'
+      # DROP first
+      util.check_drop true
       await require('./sub/only_logout')()
     when '--nft-gen'
+      # DROP first
+      util.check_drop true
       await require('./sub/nft_gen')()
     when '--nft-init'
+      # NOT really drop
+      util.check_drop false
       await require('./sub/nft_init')()
     when '--nft-reset'
+      # NOT really drop
+      util.check_drop false
       await require('./sub/nft_reset')()
     when '--log-backup'
+      # DROP first
+      util.check_drop true
       await require('./sub/log_backup')()
     when '--log-clean'
+      # DROP first
+      util.check_drop true
       await require('./sub/log_clean')()
     when '--run-keep-alive'
+      # DROP first
+      util.check_drop true
       await require('./sub/run_keep_alive')()
     when '--run-route-filter'
+      # NOT really drop
+      util.check_drop false
       await require('./sub/run_route_filter')()
     when '--route-filter'
+      # NOT really drop
+      util.check_drop false
       await require('./sub/route_filter')()
     when '--keep-alive'
+      # DROP first
+      util.check_drop true
       await require('./sub/keep_alive')()
     when '--once-keep-alive'
+      # DROP first
+      util.check_drop true
       await require('./sub/once_keep_alive')()
     when '--kill-keep-alive'
+      # DROP first
+      util.check_drop true
       await require('./sub/kill_keep_alive')()
     when '--kill-route-filter'
+      # DROP first
+      util.check_drop true
       await require('./sub/kill_route_filter')()
     when '--login'
+      # not drop here
       await require('./sub/login_')()
     when '--logout'
+      # not drop here
       await require('./sub/logout_')()
+    # NO drop check
     when '--help'
       _print_help()
     when '--version'

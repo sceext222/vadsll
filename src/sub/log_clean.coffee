@@ -8,7 +8,7 @@ config = require '../config'
 
 
 log_clean = ->
-  log_path = config.get_log_path()
+  log_path = config.get_dir 'log'
   # clean each log file
   for i in config.LOG_FILE_LIST
     log_file = path.join log_path, i

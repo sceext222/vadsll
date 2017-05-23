@@ -2,7 +2,7 @@
 
 interface = "enp0s3"
 account = "<your-account>"
-password = "<your-password>"
+# NOTE password is in the `shadow` file
 
 
 # !!! ADVANCED config (DO NOT edit !!!)

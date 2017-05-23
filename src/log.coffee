@@ -22,6 +22,8 @@ d = (text) ->
   _p '.D: ' + text
 e = (text) ->
   _p '.E: ' + text
+w = (text) ->
+  _p '.W: ' + text
 p = (text) ->
   _p ': ' + text
 
@@ -29,6 +31,7 @@ p = (text) ->
 module.exports = {
   d  # DEBUG
   e  # ERROR
+  w  # WARN
 
   p  # normal print
 }

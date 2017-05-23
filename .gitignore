@@ -1,7 +1,9 @@
 
-dist/
 /etc/config.json
 /etc/config.toml
+/etc/shadow
+
+dist/
 tmp/
 
 # node.js (npm)

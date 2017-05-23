@@ -1,11 +1,9 @@
 # only_logout.coffee, vadsll/src/sub/
-
 async_ = require '../async'
 util = require '../util'
 config = require '../config'
 log = require '../log'
 packet_util = require '../packet_util'
-
 
 only_logout = ->
   # load config
@@ -27,6 +25,5 @@ only_logout = ->
   log.d "waiting server to close socket .. . "
   await t.wait_err()
   log.p "[ OK ] only-logout success "
-
 
 module.exports = only_logout  # async

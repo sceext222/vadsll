@@ -1,13 +1,14 @@
 # login_.coffee, vadsll/src/
-
 util = require '../util'
 config = require '../config'
 log = require '../log'
 
 login_ = ->
   c = await util.load_config()
-  log.p "start LOGIN "
+  # do init before login
+  await util.call_this ['--slave', '--init']
 
+  log.p "start LOGIN "
   await util.call_this ['--slave', '--log-backup']
   await util.call_this ['--slave', '--log-clean']
 

@@ -6,6 +6,7 @@ config = require './config'
 _MAIN_OPERATION = [
   '--login'
   '--logout'
+  '--init'
   '--only-login'
   '--only-logout'
   '--nft-gen'
@@ -26,13 +27,20 @@ _MAIN_OPERATION = [
 
 p_args = (args) ->
   o = null
-  for i in args
-    switch i
+  rest = args[..]
+  while rest.length > 0
+    a = rest[0]
+    rest = rest[1..]
+    switch a
       when config.FLAG_SLAVE
         config.set_slave true
+      when config.FLAG_DROP
+        uid = Number.parse rest[0]
+        rest = rest[1..]
+        config.set_drop uid
       else
         for m in _MAIN_OPERATION
-          if i == m
+          if a == m
             o = m
             break
   o
