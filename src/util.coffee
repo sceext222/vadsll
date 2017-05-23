@@ -247,6 +247,7 @@ check_drop = (do_drop) ->
 # check and auto set --drop for --login and --logout
 auto_drop = ->
   # TODO
+  await return
 
 
 module.exports = {

@@ -104,10 +104,12 @@ main = (argv) ->
       util.check_drop true
       await require('./sub/kill_route_filter')()
     when '--login'
-      # not drop here
+      # not drop here, but check auto_drop
+      await util.auto_drop()
       await require('./sub/login_')()
     when '--logout'
-      # not drop here
+      # not drop here, but check auto_drop
+      await util.auto_drop()
       await require('./sub/logout_')()
     # NO drop check
     when '--help'
