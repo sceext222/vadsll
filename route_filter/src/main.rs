@@ -5,6 +5,7 @@ mod simple_binding;
 mod ip_header;
 mod header;
 mod process_packet;
+mod drop_p;
 
 use process_packet::{
     p_args,

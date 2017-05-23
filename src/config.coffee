@@ -49,7 +49,7 @@ LOG_FILE_LIST = [  # LOG/
 LOG_OLD_PATH = 'old'
 
 
-_is_system_install = ->
+is_system_install = ->
   d = path.resolve __dirname
   if d.startsWith _DIR.system._prefix
     return true
@@ -59,7 +59,7 @@ _path_pretty_print = (raw) ->
   path.relative path.resolve('.'), raw
 
 get_dir = (dir) ->
-  if _is_system_install()
+  if is_system_install()
     o = _DIR.system[dir]
   else
     o = _path_pretty_print path.join(__dirname, _DIR.test[dir])
@@ -102,6 +102,7 @@ module.exports = {
   LOG_FILE_LIST
   LOG_OLD_PATH
 
+  is_system_install
   get_dir
   get_file_path
   set_config
