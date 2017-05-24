@@ -2,10 +2,9 @@
 Description=vadsll login service
 
 [Service]
-Environment=NODE=/usr/bin/node
-
 Type=forking
-PIDFile=/var/log/vadsll/route_filter.pid
-ExecStart=/usr/bin/env $NODE /usr/local/lib/vadsll/vadsll/vadsll.js --login
-ExecStop=/usr/bin/env $NODE /usr/local/lib/vadsll/vadsll/vadsll.js --logout
+PIDFile=/run/vadsll/route_filter.pid
+# TODO add keep-alive PID file
+ExecStart=/usr/bin/vadsll --login
+ExecStop=/usr/bin/vadsll --logout
 Restart=no

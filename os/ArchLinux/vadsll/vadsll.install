@@ -1,0 +1,27 @@
+
+# msg show to user
+_msg() {
+  echo "  Please modify config file with command `vadsll-conf` "
+  echo "  And set password with command `vadsll-passwd` "
+  echo "  More information online <https://github.com/sceext222/vadsll> "
+}
+
+
+post_install() {
+  # create vadsll system user
+  useradd --system vadsll
+
+  _msg
+}
+
+post_upgrade() {
+  _msg
+}
+
+pre_remove() {
+  echo "  Stop vadsll service .. . "
+  systemctl stop vadsll
+
+  # remove vadsll system user
+  userdel vadsll
+}
