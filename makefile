@@ -40,7 +40,7 @@ system-install-archlinux:
 	install -Dm644 etc/config.toml.example -t $(DESTDIR)/etc/vadsll
 	install -Dm644 etc/config.toml.zh_CN.example -t $(DESTDIR)/etc/vadsll
 	# install systemd unit file
-	install -Dm644 os/systemd/vadsll.service $(DESTDIR)/usr/lib/systemd/system
+	install -Dm644 os/systemd/vadsll.service -t $(DESTDIR)/usr/lib/systemd/system/
 	# install os mark
 	install -Dm644 os/ArchLinux/os $(DESTDIR)/usr/lib/vadsll/os
 	# install bin commands
