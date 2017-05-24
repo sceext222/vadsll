@@ -1,4 +1,5 @@
 # init.coffee, vadsll/src/
+async_ = require '../async'
 util = require '../util'
 config = require '../config'
 log = require '../log'

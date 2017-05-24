@@ -1,15 +1,15 @@
 
 # msg show to user
 _msg() {
-  echo "  Please modify config file with command `vadsll-conf` "
-  echo "  And set password with command `vadsll-passwd` "
+  echo "  Please modify config file with command \`vadsll-conf\` "
+  echo "  And set password with command \`vadsll-passwd\` "
   echo "  More information online <https://github.com/sceext222/vadsll> "
 }
 
 
 post_install() {
   # create vadsll system user
-  useradd --system vadsll
+  useradd --system --shell /usr/bin/nologin --home-dir /usr/lib/vadsll --comment "System user for VADSLL " vadsll
 
   _msg
 }
