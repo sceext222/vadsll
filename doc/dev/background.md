@@ -14,7 +14,10 @@
 
 ## 编写
 
-VADSLL 的原型是 (TODO)
+VADSLL 的原型是 `张敬强 <godfrey.public@gmail.com>` 的
+项目 <http://code.google.com/p/vadsl/>. <br />
+(<http://forum.ubuntu.org.cn/viewtopic.php?t=398847> <br />
+<https://github.com/sceext222/vadsl_linux>)
 
 这是一个使用 `C` 语言 (以及 bash 脚本) 编写的软件,
 并且使用 Linux 内核的 `iptables` 功能.
@@ -26,7 +29,7 @@ VADSLL 的原型是 (TODO)
 VADSLL 使用 `nftables` (替代 `iptables`), 能够兼容 NAT,
 并且增加了一些功能特性.
 
-VADSLL 最初在 [`ArchLinux`](TODO) 上 开发/测试,
+VADSLL 最初在 [`ArchLinux`](https://www.archlinux.org/) 上 开发/测试,
 但是也能够支持其它的 GNU/Linux 发行版本.
 
 (VADSLL 首个可工作版本, 完成于 `2017.04` )
