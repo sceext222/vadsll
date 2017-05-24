@@ -4,7 +4,6 @@
 
 # global config
 NODE_BIN=/usr/bin/node
-#NODE_BIN=/usr/lib/vadsll/node
 VADSLL_BIN=/usr/lib/vadsll/vadsll/vadsll.js
 
 VADSLL_CONFIG_FILE=/etc/vadsll/config.toml
@@ -14,10 +13,28 @@ VADSLL_PASSWD_FILE=/etc/vadsll/shadow
 DEFAULT_EDITOR=gedit
 
 
+OS_TYPE_FILE=/usr/lib/vadsll/os
+# check os type
+_check_os_type() {
+  local _os
+  _os=$(cat $OS_TYPE_FILE)
+  case $_os in
+    UbuntuLTS|Ubuntu|Fedora|CentOS)
+      NODE_BIN=/opt/vadsll/node
+      ;;
+    # default as ArchLinux
+    *)
+      NODE_BIN=/usr/bin/node
+      ;;
+  esac
+}
+
+
 # sub commands
 
 # run vadsll (bin)
 _vadsll() {
+  _check_os_type
   $NODE_BIN $VADSLL_BIN $*
 }
 
