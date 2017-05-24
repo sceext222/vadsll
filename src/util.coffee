@@ -246,8 +246,18 @@ check_drop = (do_drop) ->
 
 # check and auto set --drop for --login and --logout
 auto_drop = ->
-  # TODO
-  await return
+  if config.get_drop()?
+    return
+  uid = process.getuid()
+  if 0 != uid
+    log.w "not run as root, no auto_drop "
+    return
+  # get uid from id
+  id_text = await async_.call_cmd ['id', config.SYSTEM_USER]
+  uid = Number.parseInt id_text.split('uid=')[1].split('(')[0]
+  config.set_drop uid
+
+  log.d "auto drop to #{config.SYSTEM_USER}, uid = #{uid}"
 
 
 module.exports = {

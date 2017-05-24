@@ -35,7 +35,7 @@ p_args = (args) ->
       when config.FLAG_SLAVE
         config.set_slave true
       when config.FLAG_DROP
-        uid = Number.parse rest[0]
+        uid = Number.parseInt rest[0]
         rest = rest[1..]
         config.set_drop uid
       else
