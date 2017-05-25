@@ -1,0 +1,12 @@
+#!/bin/sh
+# prerm for vadsll, UbuntuLTS build
+
+pre_remove() {
+  echo "  Stop vadsll service .. . "
+  systemctl stop vadsll
+
+  # remove vadsll system user
+  userdel vadsll
+}
+
+pre_remove

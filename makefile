@@ -21,8 +21,8 @@ build:
 .PHONY: build
 
 
-# system install for ArchLinux
-system-install-archlinux:
+# common system install
+_common_system_install:
 	# create directory
 	mkdir -p $(DESTDIR)/usr/lib/vadsll
 	mkdir -p $(DESTDIR)/usr/bin
@@ -39,10 +39,6 @@ system-install-archlinux:
 	# install config files
 	install -Dm644 etc/config.toml.example -t $(DESTDIR)/etc/vadsll
 	install -Dm644 etc/config.toml.zh_CN.example -t $(DESTDIR)/etc/vadsll
-	# install systemd unit file
-	install -Dm644 os/systemd/vadsll.service -t $(DESTDIR)/usr/lib/systemd/system/
-	# install os mark
-	install -Dm644 os/ArchLinux/os $(DESTDIR)/usr/lib/vadsll/os
 	# install bin commands
 	install -Dm755 os/vadsll.sh $(DESTDIR)/usr/lib/vadsll/vadsll.sh
 	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll
@@ -52,8 +48,25 @@ system-install-archlinux:
 	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-log
 	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-conf
 	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-passwd
+.PHONY: _common_system_install
 
+# system install for ArchLinux
+system-install-archlinux: _common_system_install
+	# install systemd unit file
+	install -Dm644 os/systemd/vadsll.service -t $(DESTDIR)/usr/lib/systemd/system/
+	# install os mark
+	install -Dm644 os/ArchLinux/os $(DESTDIR)/usr/lib/vadsll/os
 .PHONY: system-install-archlinux
+
+# system install for UbuntuLTS
+system-install-ubuntu-lts: _common_system_install
+	# install systemd unit file
+	install -Dm644 os/systemd/vadsll.service -t $(DESTDIR)/lib/systemd/system/
+	# install os mark
+	install -Dm644 os/Ubuntu16.04LTS/os $(DESTDIR)/usr/lib/vadsll/os
+	# install node
+	ln -s node-bin/bin/node $(DESTDIR)/opt/vadsll/node
+.PHONY: system-install-ubuntu-lts
 
 
 clean:
