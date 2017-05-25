@@ -36,7 +36,7 @@ pub fn check_drop(a: &ArgsInfo) {
                 println!("rf.WARN: current not root, no DROP ");
                 return;
             }
-            println!("rf.DEBUG: drop to UID = {} ", uid);
+            println!("rf.DEBUG: drop to UID = {} ", uid2);
             // try to drop
             _setgid(uid2);  // NOTE setgid before setuid, and gid is the same as uid
             _setuid(uid2);

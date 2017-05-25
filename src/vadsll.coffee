@@ -4,7 +4,7 @@ p_args = require './p_args'
 util = require './util'
 
 
-VADSLL_VERSION = 'vadsll version 1.0.0-1 test20170525 0050'
+VADSLL_VERSION = 'vadsll version 1.0.0-2 test20170525 1454'
 
 _print_help = ->
   console.log '''
@@ -84,8 +84,7 @@ main = (argv) ->
       util.check_drop false
       await require('./sub/run_route_filter')()
     when '--route-filter'
-      # NOT really drop
-      util.check_drop false
+      # NOTE not drop here
       await require('./sub/route_filter')()
     when '--keep-alive'
       # DROP first

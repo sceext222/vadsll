@@ -68,6 +68,9 @@ route_filter = ->
     args.push '--drop'
     args.push drop
   _spawn args
+
+  # NOTE DROP after start sub route_filter process
+  util.check_drop true
   # set exit event listener
   process.on 'SIGTERM', () ->
     log.d "receive SIGTERM, exiting .. . "
