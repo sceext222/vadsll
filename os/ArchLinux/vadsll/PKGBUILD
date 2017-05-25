@@ -1,0 +1,41 @@
+# maintainer: sceext <sceext@foxmail.com>
+
+pkgname=vadsll
+pkgver="1.0.0_1"
+pkgrel=1
+pkgdesc="Virtual ADSL for Linux "
+arch=('x86_64')
+url="https://github.com/sceext222/vadsll"
+license=('GPL3')
+depends=(
+  'nodejs>=7.10'
+  'nftables>=0.7'
+  'libnetfilter_queue>=1.0'
+)
+makedepends=(
+  'npm>=4.6'
+  'rust>=1.17'
+  'cargo>=0.18'
+)
+optdepends=(
+  'gedit: Edit config file with gedit'
+  'vim: Edit config file with vim'
+)
+install=$pkgname.install
+source=(
+  "$pkgname-$pkgver.tar.gz::https://github.com/sceext222/vadsll/archive/v1.0.0-1.tar.gz"
+)
+sha256sums=()
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  make init
+  make build
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir" system-install-archlinux
+}

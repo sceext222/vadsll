@@ -1,7 +1,5 @@
 # keep_alive.coffee, vadsll/src/sub/
 
-path = require 'path'
-
 async_ = require '../async'
 util = require '../util'
 config = require '../config'
@@ -9,7 +7,7 @@ log = require '../log'
 
 
 _pid_file = ->
-  path.join config.get_log_path(), config.LOG_PID_KEEP_ALIVE
+  config.get_file_path 'run', config.FILE.pid.keep_alive
 
 _on_exit = ->
   # remove PID file

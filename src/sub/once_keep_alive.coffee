@@ -1,5 +1,4 @@
 # once_keep_alive.coffee, vadsll/src/sub/
-
 async_ = require '../async'
 util = require '../util'
 config = require '../config'
@@ -17,7 +16,6 @@ once_keep_alive = ->
 
   # make logout data
   data = packet_util.make_keep_msg ip, c.account
-
   # connecting to auth server and send data
   t = await util.connect_auth_server c.auth_server
   log.d "send keep packet (#{data.length} Byte data)"
@@ -26,6 +24,5 @@ once_keep_alive = ->
   log.d "waiting server to close socket .. . "
   await t.wait_err()
   log.p "once-keep-alive finished "
-
 
 module.exports = once_keep_alive  # async

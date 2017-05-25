@@ -8,10 +8,11 @@ use simple_binding::{
     VerdictType,
 };
 use header::HeaderP;
+use drop_p::check_drop;
 
 
 // # command line process part
-const P_VERSION: &'static str = "vadsll: route_filter version 0.1.0 test20170406 2208";
+const P_VERSION: &'static str = "vadsll: route_filter version 1.0.0-3 test20170525 1447";
 // command line arguments and usage
 fn _print_help() {
     println!("{}",
@@ -22,6 +23,7 @@ Usage:
     --dst-ip DST_IP    Destination IP address (the transfer gateway)
 
     --mtu MTU          MTU of Ethernet (default: 1500 Byte)
+    --drop UID         run this process with UID (and GID)
 
     --help             Show this help text
     --version          Show version of this program
@@ -35,6 +37,7 @@ pub struct ArgsInfo {
     pub src_ip: u32,
     pub dst_ip: u32,
     pub mtu: usize,
+    pub drop_uid: Option<u32>,
 }
 
 impl ArgsInfo {
@@ -44,6 +47,7 @@ impl ArgsInfo {
             src_ip: 0,
             dst_ip: 0,
             mtu: 1500,
+            drop_uid: None,
         }
     }
 }
@@ -111,6 +115,17 @@ pub fn p_args() -> PargsResult {
             match usize::from_str_radix(&args[i], 10) {
                 Ok(mtu) => {
                     o.mtu = mtu;
+                },
+                _ => {
+                    _bad_args();
+                    return PargsResult::Err;
+                }
+            }
+            i += 1;
+        } else if a == "--drop" {
+            match u32::from_str_radix(&args[i], 10) {
+                Ok(uid) => {
+                    o.drop_uid = Some(uid);
                 },
                 _ => {
                     _bad_args();
@@ -215,11 +230,12 @@ pub fn process_loop(a: &ArgsInfo) {
     let mut q = h.queue(a.queue, cb).unwrap();
     q.init(QueueMode::CopyPacket).unwrap();
 
+    // check DROP before enter loop (after init done)
+    check_drop(a);
     // TODO support exit function
     // recv packet loop
     println!("rf.DEBUG: enter recv packet loop");
     loop {
         q.recv_one();
     }
-    // FIXME
 }

@@ -1,5 +1,4 @@
 # log_backup.coffee, vadsll/src/sub/
-
 path = require 'path'
 
 async_ = require '../async'
@@ -8,9 +7,11 @@ config = require '../config'
 
 
 log_backup = ->
-  log_path = config.get_log_path()
+  log_path = config.get_dir 'log'
   old_path = path.join log_path, config.LOG_OLD_PATH
-  # FIXME TODO try to create old_path dir
+  # create old dir if not exist
+  if ! await async_.file_exist(old_path)
+    await util.run_check ['mkdir', '-p', old_path]
 
   # create backup dir
   backup_path = path.join old_path, new Date().toISOString()

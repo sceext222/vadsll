@@ -143,6 +143,11 @@ call_this_args = (args, no_slave) ->
   o = [process.argv[0], process.argv[1]]
   if (! no_slave) and config.is_slave()
     o.push config.FLAG_SLAVE
+  # pass --drop
+  drop = config.get_drop()
+  if drop?
+    o.push '--drop'
+    o.push drop
   o.concat args
 
 # run `vadsll` (this program) with different args
@@ -195,13 +200,64 @@ create_pid_file = (file_path) ->
 
 # load config.json
 load_config = ->
-  config_file = config.get_config_file_path()
+  config_file = config.get_file_path 'etc', config.FILE.config
   # DEBUG
   if ! config.is_slave()
     console.log "vadsll.D: load config file #{config_file}"
   text = await async_.read_file config_file
   config_data = toml.parse text
   config.set_config config_data
+
+read_passwd = ->
+  passwd_file = config.get_file_path 'etc', config.FILE.passwd
+  await async_.read_file passwd_file
+
+
+# drop from root
+check_drop = (do_drop) ->
+  uid = process.getuid()
+  gid = process.getgid()
+  log.d "uid = #{uid}, gid = #{gid} "
+  if ! do_drop
+    return  # not DROP
+
+  drop = config.get_drop()
+  if ! drop?
+    log.w "no `--drop` in command line, not DROP "
+    return
+  # check is root
+  if 0 != uid
+    log.w "current is not root, no DROP "
+    return
+  # try set uid/gid
+  process.setgid drop
+  process.setuid drop  # NOTE setuid after setgid
+  # FIXME TODO error process ?
+
+  # check drop result
+  uid = process.getuid()
+  gid = process.getgid()
+  log.d "(after drop) uid = #{uid}, gid = #{gid} "
+
+  if (uid != drop) or (gid != drop)
+    lod.e "DROP failed ! exit process now "
+    process.exit 1
+  # drop done
+
+# check and auto set --drop for --login and --logout
+auto_drop = ->
+  if config.get_drop()?
+    return
+  uid = process.getuid()
+  if 0 != uid
+    log.w "not run as root, no auto_drop "
+    return
+  # get uid from id
+  id_text = await async_.call_cmd ['id', config.SYSTEM_USER]
+  uid = Number.parseInt id_text.split('uid=')[1].split('(')[0]
+  config.set_drop uid
+
+  log.d "auto drop to #{config.SYSTEM_USER}, uid = #{uid}"
 
 
 module.exports = {
@@ -223,6 +279,10 @@ module.exports = {
   create_pid_file  # async
 
   load_config  # async
+  read_passwd  # async
+
+  check_drop
+  auto_drop  # async
 
   TcpC
 }

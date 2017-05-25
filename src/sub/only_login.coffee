@@ -1,8 +1,6 @@
 # only_login.coffee, vadsll/src/sub/
 # FIXME TODO more error process
 
-path = require 'path'
-
 async_ = require '../async'
 util = require '../util'
 config = require '../config'
@@ -30,19 +28,19 @@ _create_log = (res, c, ip_a, mac_str) ->
     time: new Date().toISOString()
   }
   if res.type == 'OK'
-    log_file = path.join config.get_log_path(), config.LOG_SERVER_RES_OK
+    log_file = config.get_file_path 'log', config.FILE.log.server_res_ok
   else
-    log_file = path.join config.get_log_path(), config.LOG_SERVER_RES_ERR
+    log_file = config.get_file_path 'log', config.FILE.log.server_res_err
   await util.write_file log_file, util.print_json(o) + '\n'
 
 _decode_server_msg = (raw) ->
   b64 = raw.split('base64:')[1].trim()
-  tmp_file = path.join config.get_log_path(), config.LOG_SERVER_MSG_TMP
+  tmp_file = config.get_file_path 'log', config.FILE.log.server_msg_tmp
   await util.write_file tmp_file, Buffer.from(b64, 'base64')
   result = await async_.call_cmd ['iconv', '-f', 'gbk', '-t', 'utf-8', tmp_file]
 
 
-only_login = ->
+only_login = (passwd) ->
   # load config
   c = await util.load_config()
   # DEBUG config
@@ -53,7 +51,7 @@ only_login = ->
   [mac, mac_str] = await util.get_mac_addr c.interface
   log.d "IP addr = #{ip.join('.')}, MAC addr = #{mac_str}"
   # make login data
-  data = packet_util.make_login_msg mac, ip, c.account, c.password
+  data = packet_util.make_login_msg mac, ip, c.account, passwd
 
   # connecting to auth server and send data
   t = await util.connect_auth_server c.auth_server

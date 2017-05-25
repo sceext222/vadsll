@@ -1,5 +1,4 @@
 # logout_.coffee, vadsll/src/
-
 util = require '../util'
 config = require '../config'
 log = require '../log'

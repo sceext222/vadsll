@@ -1,0 +1,10 @@
+[Unit]
+Description=vadsll login service
+
+[Service]
+Type=forking
+PIDFile=/run/vadsll/route_filter.pid
+# TODO add keep-alive PID file
+ExecStart=/usr/bin/vadsll --login
+ExecStop=/usr/bin/vadsll --logout
+Restart=no

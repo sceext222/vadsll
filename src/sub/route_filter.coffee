@@ -1,6 +1,4 @@
 # route_filter.coffee, vadsll/src/sub/
-
-path = require 'path'
 child_process = require 'child_process'
 
 async_ = require '../async'
@@ -33,7 +31,7 @@ _spawn = (args) ->
 
 
 _pid_file = ->
-  path.join config.get_log_path(), config.LOG_PID_ROUTE_FILTER
+  config.get_file_path 'run', config.FILE.pid.route_filter
 
 _on_exit = ->
   _gd.exit_flag = true
@@ -50,11 +48,11 @@ route_filter = ->
   # create PID file
   await util.create_pid_file _pid_file()
 
-  server_log_file = path.join config.get_log_path(), config.LOG_SERVER_RES_OK
+  server_log_file = config.get_file_path 'log', config.FILE.log.server_res_ok
   s = JSON.parse await async_.read_file(server_log_file)
 
   args = [
-    config.get_route_filter_bin()
+    config.get_file_path 'lib', config.FILE.route_filter
     '--queue'
     c.nfqueue_id
     '--src-ip'
@@ -64,7 +62,17 @@ route_filter = ->
     '--mtu'
     c.ethernet_mtu
   ]
+  # FIXME route_filter must run as root !!
+  ## add --drop
+  #drop = config.get_drop()
+  #if drop?
+  #  args.push '--drop'
+  #  args.push drop
   _spawn args
+
+  # FIXME route_filter run as root, so here can not drop
+  ## NOTE DROP after start sub route_filter process
+  #util.check_drop true
   # set exit event listener
   process.on 'SIGTERM', () ->
     log.d "receive SIGTERM, exiting .. . "
