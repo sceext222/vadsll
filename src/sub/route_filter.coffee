@@ -62,15 +62,17 @@ route_filter = ->
     '--mtu'
     c.ethernet_mtu
   ]
-  # add --drop
-  drop = config.get_drop()
-  if drop?
-    args.push '--drop'
-    args.push drop
+  # FIXME route_filter must run as root !!
+  ## add --drop
+  #drop = config.get_drop()
+  #if drop?
+  #  args.push '--drop'
+  #  args.push drop
   _spawn args
 
-  # NOTE DROP after start sub route_filter process
-  util.check_drop true
+  # FIXME route_filter run as root, so here can not drop
+  ## NOTE DROP after start sub route_filter process
+  #util.check_drop true
   # set exit event listener
   process.on 'SIGTERM', () ->
     log.d "receive SIGTERM, exiting .. . "

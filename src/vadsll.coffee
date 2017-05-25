@@ -4,7 +4,7 @@ p_args = require './p_args'
 util = require './util'
 
 
-VADSLL_VERSION = 'vadsll version 1.0.0-2 test20170525 1454'
+VADSLL_VERSION = 'vadsll version 1.0.0-1 test20170525 1515'
 
 _print_help = ->
   console.log '''
@@ -99,8 +99,9 @@ main = (argv) ->
       util.check_drop true
       await require('./sub/kill_keep_alive')()
     when '--kill-route-filter'
-      # DROP first
-      util.check_drop true
+      # FIXME route_filter run as root, can not drop here
+      ## DROP first
+      #util.check_drop true
       await require('./sub/kill_route_filter')()
     when '--login'
       # not drop here, but check auto_drop
