@@ -1,11 +1,9 @@
 
 BUILD_DIST=dist
 
-# TODO support local install (not system install)
 
 target: build
 .PHONY: target
-
 
 init: node_modules
 .PHONY: init
@@ -65,7 +63,8 @@ system-install-ubuntu-lts: _common_system_install
 	# install os mark
 	install -Dm644 os/Ubuntu16.04LTS/os $(DESTDIR)/usr/lib/vadsll/os
 	# install node
-	ln -s node-bin/bin/node $(DESTDIR)/opt/vadsll/node
+	# FIMXE link node to right place
+	#ln -s node-bin/bin/node $(DESTDIR)/opt/vadsll/node
 .PHONY: system-install-ubuntu-lts
 
 
@@ -74,3 +73,5 @@ clean:
 	- rm -r node_modules
 	- rm -r route_filter/target
 .PHONY: clean
+
+# NOTE not support local install

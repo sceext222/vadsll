@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # vadsll.sh, vadsll/os/
 # vadsll start script, only used in system install mode
 
