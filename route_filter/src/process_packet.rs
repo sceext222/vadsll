@@ -12,7 +12,7 @@ use drop_p::check_drop;
 
 
 // # command line process part
-const P_VERSION: &'static str = "vadsll: route_filter version 1.0.0-1 test20170524 2307";
+const P_VERSION: &'static str = "vadsll: route_filter version 1.0.0-2 test20170525 1437";
 // command line arguments and usage
 fn _print_help() {
     println!("{}",
@@ -132,6 +132,7 @@ pub fn p_args() -> PargsResult {
                     return PargsResult::Err;
                 }
             }
+            i += 1;
         } else {
             // FIXME print to stderr
             println!("rf.ERROR: unknow comamnd line argument `{}`. Please try `--help` ", a);
