@@ -1,6 +1,10 @@
 # VADSLL
 Virtual ADSL tools for Linux
 
+(NOTE FIXME TODO: this `README.md` need update !
+Please see <https://github.com/sceext222/vadsll> for more information.
+)
+
 
 ## Description
 (虚拟 ADSL)
