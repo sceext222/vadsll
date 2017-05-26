@@ -34,7 +34,7 @@ ln -s node-v7.10.0-linux-x64/bin/node %{buildroot}/opt/vadsll/node
 
 %files
 %defattr(-,root,root)
-/usr/bin/
+/usr/bin/vadsll*
 /usr/lib/vadsll/
 /usr/lib/systemd/system/vadsll.service
 /etc/vadsll/
@@ -43,14 +43,14 @@ ln -s node-v7.10.0-linux-x64/bin/node %{buildroot}/opt/vadsll/node
 %post
 # msg show to user
 _msg() {
-  echo "  Please modify config file with command \`vadsll-conf\` "
-  echo "  And set password with command \`vadsll-passwd\` "
-  echo "  More information online <https://github.com/sceext222/vadsll> "
+  echo "  -> Please modify config file with command \`vadsll-conf\` "
+  echo "  -> And set password with command \`vadsll-passwd\` "
+  echo "  -> More information online <https://github.com/sceext222/vadsll> "
 }
 
 post_install() {
   # create vadsll system user
-  useradd --system --shell /usr/bin/nologin --home-dir /usr/lib/vadsll --comment "System user for VADSLL " vadsll
+  useradd --system --shell /usr/sbin/nologin --home-dir /usr/lib/vadsll --comment "System user for VADSLL " vadsll
 
   _msg
 }
