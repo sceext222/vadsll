@@ -2,7 +2,7 @@
 
 pkgname=vadsll
 pkgver="1.0.0_1"
-pkgrel=1
+pkgrel=2
 pkgdesc="Virtual ADSL for Linux "
 arch=('x86_64')
 url="https://github.com/sceext222/vadsll"
@@ -28,14 +28,14 @@ source=(
 sha256sums=()
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname-${pkgver/_/-}"
 
   make init
   make build
 }
 
 package() {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname-${pkgver/_/-}"
 
   make DESTDIR="$pkgdir" system-install-archlinux
 }
