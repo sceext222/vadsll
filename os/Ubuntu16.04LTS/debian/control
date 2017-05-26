@@ -1,0 +1,13 @@
+Package: vadsll
+Section: unknow
+Priority: optional
+Maintainer: sceext <sceext@foxmail.com>
+Standards-Version: 1.0.0~1
+Homepage: https://github.com/sceext222/vadsll
+Build-Depends: npm, rustc, cargo, libnetfilter-queue-dev
+Architecture: amd64
+Depends: nodejs, nftables, libnetfilter-queue1
+Recommends: vim, gedit
+Version: 1.0.0~1-2
+Installed-Size:
+Description: Virtual ADSL for Linux (for Ubuntu16.04LTS)
