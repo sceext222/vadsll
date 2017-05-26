@@ -10,4 +10,4 @@ Depends: nodejs, nftables, libnetfilter-queue1
 Recommends: vim, gedit
 Version: 1.0.0~1-2
 Installed-Size:
-Description: Virtual ADSL for Linux
+Description: Virtual ADSL for Linux (for Ubuntu16.04LTS)
