@@ -39,10 +39,10 @@ VADSLL 提供了若干命令以方便用户使用.
   $
   ```
 
-  **注意**: 输入 口令 时, 光标不会移动 !
+  **注意**: 输入 口令 时, 光标不会移动 ! (输入后按 *回车* 键保存)
 
-  将 登陆口令 保存在单独的文件中, 并且 设置权限 (只有 `root` 能 读取)
-  有助于防止口令泄露.
+  (将 登陆口令 保存在单独的文件中, 并且 设置权限 (只有 `root` 能 读取)
+  有助于防止口令泄露. )
 
 + **`vadsll-show`** <br />
   显示 VADSLL 运行状态
@@ -198,3 +198,14 @@ $
 ```
 
 TODO
+
+
+## NAT
+
+如需使用 NAT 功能 (比如用于 网络共享), 请按照 `nftables` 官方的说明设置 NAT:
+
+<http://www.netfilter.org/projects/nftables/index.html> <br />
+<https://wiki.nftables.org/wiki-nftables/index.php/Main_Page> <br />
+<https://wiki.nftables.org/wiki-nftables/index.php/Performing_Network_Address_Translation_(NAT)>
+
+VADSLL 兼容 NAT (在 `ArchLinux` 下测试), 可以和 NAT 配合使用.

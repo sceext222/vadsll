@@ -12,5 +12,9 @@ VADSLL: Virtual ADSL for Linux
 + 配置/使用
   [`usage.md`](usage.md)
 
-
 TODO
+
+
+## VADSLL 开发者文档
+
+请见 <https://github.com/sceext222/vadsll/tree/master/doc/dev>
