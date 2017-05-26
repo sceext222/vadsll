@@ -10,6 +10,7 @@ VADSLL 最初在 [`ArchLinux`](https://www.archlinux.org/) 下 开发/测试,
 
 + `ArchLinux`
 + `Ubuntu 16.04 LTS`
++ `Fedora 25`
 
 对于其它发行版本, 请自行研究安装方法 !
 
@@ -56,4 +57,15 @@ $ sudo gdebi vadsll_1.0.0~1-2_amd64.deb
 ```
 
 
-(TODO 即将提供更多 发行版本 的 安装方法 .. . )
+## Fedora 25
+(<https://github.com/sceext222/vadsll/tree/dist/Fedora25>)
+
+**安装 `.rpm` 软件包**
+
+下载
+[`vadsll-1.0.0_1-1.fc25.x86_64.rpm`](https://github.com/sceext222/vadsll/raw/dist/Fedora25/vadsll-1.0.0_1-1.fc25.x86_64.rpm)
+
+```
+$ wget "https://github.com/sceext222/vadsll/raw/dist/Fedora25/vadsll-1.0.0_1-1.fc25.x86_64.rpm"
+$ sudo dnf install vadsll-1.0.0_1-1.fc25.x86_64.rpm
+```

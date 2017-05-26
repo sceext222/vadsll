@@ -48,13 +48,24 @@ _common_system_install:
 	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-passwd
 .PHONY: _common_system_install
 
-# system install for ArchLinux
-system-install-archlinux: _common_system_install
+# install systemd unit files to default location
+_common_install_systemd:
 	# install systemd unit file
 	install -Dm644 os/systemd/vadsll.service -t $(DESTDIR)/usr/lib/systemd/system/
+.PHONY: _common_install_systemd
+
+# system install for ArchLinux
+system-install-archlinux: _common_system_install _common_install_systemd
 	# install os mark
 	install -Dm644 os/ArchLinux/os $(DESTDIR)/usr/lib/vadsll/os
 .PHONY: system-install-archlinux
+
+# system install for Fedora
+system-install-fedora: _common_system_install _common_install_systemd
+	# install os mark
+	install -Dm644 os/Fedora25/os $(DESTDIR)/usr/lib/vadsll/os
+	# TODO install node
+.PHONY: system-install-fedora
 
 # system install for UbuntuLTS
 system-install-ubuntu-lts: _common_system_install
