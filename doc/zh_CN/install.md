@@ -69,3 +69,9 @@ $ sudo gdebi vadsll_1.0.0~1-2_amd64.deb
 $ wget "https://github.com/sceext222/vadsll/raw/dist/Fedora25/vadsll-1.0.0_1-1.fc25.x86_64.rpm"
 $ sudo dnf install vadsll-1.0.0_1-1.fc25.x86_64.rpm
 ```
+
+
+## 不支持
+VADSLL 将不会支持 以下 发行版本:
+
++ `CentOS`
