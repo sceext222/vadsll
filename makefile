@@ -40,12 +40,12 @@ _common_system_install:
 	# install bin commands
 	install -Dm755 os/vadsll.sh $(DESTDIR)/usr/lib/vadsll/vadsll.sh
 	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll
-	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-show
-	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-login
-	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-logout
-	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-log
-	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-conf
-	ln -s /usr/lib/vadsll/vadsll.sh $(DESTDIR)/usr/bin/vadsll-passwd
+	ln -s vadsll $(DESTDIR)/usr/bin/vadsll-show
+	ln -s vadsll $(DESTDIR)/usr/bin/vadsll-login
+	ln -s vadsll $(DESTDIR)/usr/bin/vadsll-logout
+	ln -s vadsll $(DESTDIR)/usr/bin/vadsll-log
+	ln -s vadsll $(DESTDIR)/usr/bin/vadsll-conf
+	ln -s vadsll $(DESTDIR)/usr/bin/vadsll-passwd
 .PHONY: _common_system_install
 
 # install systemd unit files to default location
