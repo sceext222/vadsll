@@ -1,6 +1,12 @@
 
 use ip_header;
 use ip_header::IpHeader;
+// TODO improve error process ?
+use simple_binding::{
+    Error,
+    ErrType,
+    err_
+};
 
 
 // GRE header, length: 4 Byte
@@ -37,11 +43,14 @@ impl HeaderP {
         self._dst_ip = dst_ip;
     }
 
-    pub fn add_header(&self, raw_data: &Vec<u8>) -> Vec<u8> {
+    pub fn add_header(&self, raw_data: &Vec<u8>) -> Result<Vec<u8>, Error> {
         // check total length exced
         let total_len = ip_header::LEN + GRE_HEADER.len() + raw_data.len();
         if total_len > self._mtu {
-            panic!("Packet too long: total_len = {}, MTU = {}, please set MTU to {}", total_len, self._mtu, (self._mtu - GRE_HEADER.len() - ip_header::LEN));
+            // not panic, just log
+            // FIXME print to stderr
+            println!("rf.WARNING: Packet too long: total_len = {}, MTU = {}, please set MTU to {}", total_len, self._mtu, (self._mtu - GRE_HEADER.len() - ip_header::LEN));
+            return Err(err_(ErrType::PacketTooLong, &format!("packet total_len = {}, MTU = {}", total_len, self._mtu), None));
         }
         // TODO error process
 
@@ -67,6 +76,6 @@ impl HeaderP {
             o[i + ip_header::LEN + GRE_HEADER.len()] = raw_data[i];
         }
         // done
-        o
+        Ok(o)
     }
 }

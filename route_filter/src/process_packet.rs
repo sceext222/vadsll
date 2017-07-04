@@ -12,7 +12,7 @@ use drop_p::check_drop;
 
 
 // # command line process part
-const P_VERSION: &'static str = "vadsll: route_filter version 1.0.0-3 test20170525 1447";
+const P_VERSION: &'static str = "vadsll: route_filter version 1.0.1 test20170704 2017";
 // command line arguments and usage
 fn _print_help() {
     println!("{}",
@@ -210,10 +210,16 @@ impl simple_binding::Callback for PacketP {
         let mut p = packet.unwrap();
         let data = p.get_data();
         // add header
-        let data = self._p.add_header(&data);
-
-        p.set_data(&data).unwrap();
-        p.verdict(VerdictType::Accept);
+        match self._p.add_header(&data) {
+            Ok(data) => {
+                p.set_data(&data).unwrap();
+                p.verdict(VerdictType::Accept);
+            },
+            Err(e) => {
+                // drop bad packet
+                p.verdict(VerdictType::Drop);
+            }
+        }
     }
 }
 

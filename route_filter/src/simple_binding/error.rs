@@ -18,6 +18,8 @@ pub enum ErrType {
     GetPacketHeader,
     GetPacketData,
     PacketDataTooLong,
+    // packet length > MTU 1500
+    PacketTooLong,
 }
 
 // FIXME use errno
