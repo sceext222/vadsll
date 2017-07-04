@@ -2,13 +2,13 @@
 
 pkgname=vadsll
 pkgver="1.0.0_1"
-pkgrel=2
+pkgrel=3
 pkgdesc="Virtual ADSL for Linux "
 arch=('x86_64')
 url="https://github.com/sceext222/vadsll"
 license=('GPL3')
 depends=(
-  'nodejs>=7.10'
+  'nodejs>=8.1'
   'nftables>=0.7'
   'libnetfilter_queue>=1.0'
 )
@@ -25,7 +25,7 @@ install=$pkgname.install
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/sceext222/vadsll/archive/v1.0.0-1.tar.gz"
 )
-sha256sums=()
+sha256sums=('9ba3727fc8bfe6d34f1a1b2582f87bed1cc1bc99fc019d211232a2dfac4f72f2')
 
 build() {
   cd "$pkgname-${pkgver/_/-}"

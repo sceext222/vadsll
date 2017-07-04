@@ -1,6 +1,6 @@
 [package]
 name = "vadsll_route_filter"
-version = "1.0.0-1"
+version = "1.0.1"
 authors = ["sceext <sceext@foxmail.com>"]
 
 [dependencies]

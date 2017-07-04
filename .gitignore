@@ -1,4 +1,6 @@
 
+/os/ArchLinux
+
 /etc/config.json
 /etc/config.toml
 /etc/shadow
