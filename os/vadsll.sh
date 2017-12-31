@@ -19,7 +19,7 @@ _check_os_type() {
   local _os
   _os=$(cat $OS_TYPE_FILE)
   case $_os in
-    UbuntuLTS|Ubuntu|Fedora)
+    UbuntuLTS|Ubuntu|Fedora|Raspberrypi3B)
       NODE_BIN=/opt/vadsll/node
       ;;
     # default as ArchLinux

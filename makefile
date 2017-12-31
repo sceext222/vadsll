@@ -78,6 +78,15 @@ system-install-ubuntu-lts: _common_system_install
 	#ln -s node-bin/bin/node $(DESTDIR)/opt/vadsll/node
 .PHONY: system-install-ubuntu-lts
 
+# system install for Raspberrypi3B
+system-install-raspberrypi3b: _common_system_install
+	# install systemd unit file
+	install -Dm644 os/systemd/vadsll.service -t $(DESTDIR)/lib/systemd/system/
+	# install os mark
+	install -Dm644 os/Raspberrypi3B/os $(DESTDIR)/usr/lib/vadsll/os
+	# TODO install node
+.PHONY: system-install-raspberrypi3b
+
 
 clean:
 	- rm -r $(BUILD_DIST)
