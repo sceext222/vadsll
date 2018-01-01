@@ -1,0 +1,6 @@
+add table ip nat
+add chain ip nat nat-dnat { type nat hook prerouting priority 0; policy accept; }
+add chain ip nat nat-snat { type nat hook postrouting priority 100; policy accept; }
+add rule nat nat-snat ip saddr 10.150.0.0/16 oifname "eth1" masquerade
+add rule nat nat-snat ip saddr 10.151.0.0/16 oifname "eth1" masquerade
+
