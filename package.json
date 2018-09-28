@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "toml": "^2.3.2"
+    "toml": "^2.3.3"
   },
   "devDependencies": {
-    "coffeescript": "^2.0.0-beta2"
+    "coffeescript": "^2.3.2"
   }
 }
